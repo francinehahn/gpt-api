@@ -1,4 +1,9 @@
 from flask import jsonify, request
+from marshmallow import ValidationError
+from app.schema.RecipeSchema import RecipeSchema
+from app.schema.SummarySchema import SummarySchema
+from app.schema.TranslatorSchema import TranslatorSchema
+from app.schema.WritingAssistantSchema import WritingAssistantSchema
 
 class GptController:
     """This class receives data from the HTTP request and returns the response"""
@@ -9,7 +14,8 @@ class GptController:
     def create_recipe(self):
         """This method receives ingredients and sends it to the service layer"""
         try:
-            data = request.json
+            data = RecipeSchema().load(request.json)
+
             response = self.gpt_service().create_recipe(data)
             
             response = jsonify(
@@ -18,6 +24,13 @@ class GptController:
             )
             
             response.status_code = 201
+            return response
+        
+        except ValidationError as err:
+            response = jsonify(
+                message = f"Validation error: {err}"
+            )
+            response.status_code = 400
             return response
         
         except Exception as err:
@@ -30,7 +43,7 @@ class GptController:
     def create_summary(self):
         """This method receives a text and sends it to the service layer"""
         try:
-            data = request.json
+            data = SummarySchema().load(request.json)
             response = self.gpt_service().create_summary(data)
             
             response = jsonify(
@@ -39,6 +52,13 @@ class GptController:
             )
             
             response.status_code = 201
+            return response
+        
+        except ValidationError as err:
+            response = jsonify(
+                message = f"Validation error: {err}"
+            )
+            response.status_code = 400
             return response
         
         except Exception as err:
@@ -51,7 +71,7 @@ class GptController:
     def translator(self):
         """This method receives a source language, a target language and a text and sends it to the service layer"""
         try:
-            data = request.json
+            data = TranslatorSchema().load(request.json)
             response = self.gpt_service().translator(data)
 
             response = jsonify(
@@ -61,6 +81,13 @@ class GptController:
             response.status_code = 201
             return response
     
+        except ValidationError as err:
+            response = jsonify(
+                message = f"Validation error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
         except Exception as err:
             response = jsonify(
                 message = f"Unexpected error: {err}"
@@ -71,7 +98,7 @@ class GptController:
     def writing_assistant(self):
         """This method receives a subject for a text and sends it to the service layer"""
         try:
-            data = request.json
+            data = WritingAssistantSchema().load(request.json)
             response = self.gpt_service().writing_assistant(data)
 
             response = jsonify(
@@ -81,6 +108,13 @@ class GptController:
             response.status_code = 201
             return response
     
+        except ValidationError as err:
+            response = jsonify(
+                message = f"Validation error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
         except Exception as err:
             response = jsonify(
                 message = f"Unexpected error: {err}"

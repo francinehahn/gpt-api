@@ -67,6 +67,7 @@ class GptService:
                 n=1,
                 stop=None
             )
+            
             return response['choices'][0]['text']
         
         except Exception as err:
