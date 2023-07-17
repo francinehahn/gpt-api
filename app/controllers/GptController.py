@@ -7,6 +7,7 @@ class GptController:
         self.gpt_service = gpt_service
 
     def create_recipe(self):
+        """This method receives ingredients and sends it to the service layer"""
         try:
             data = request.json
             response = self.gpt_service().create_recipe(data)
@@ -27,6 +28,7 @@ class GptController:
             return response
         
     def create_summary(self):
+        """This method receives a text and sends it to the service layer"""
         try:
             data = request.json
             response = self.gpt_service().create_summary(data)
@@ -47,6 +49,7 @@ class GptController:
             return response
         
     def translator(self):
+        """This method receives a source language, a target language and a text and sends it to the service layer"""
         try:
             data = request.json
             response = self.gpt_service().translator(data)
@@ -66,6 +69,7 @@ class GptController:
             return response
         
     def writing_assistant(self):
+        """This method receives a subject for a text and sends it to the service layer"""
         try:
             data = request.json
             response = self.gpt_service().writing_assistant(data)
