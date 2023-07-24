@@ -8,6 +8,9 @@ This is an API REST that consumes data from the OpenAI API.
 - Flask
 - OpenAI API
 
+## 🌐 Deploy
+https://gpt-api-delta.vercel.app
+
 ## ☑️ Requests
 - `Create Recipe:` The user provides the ingredients and the endpoint returns a recipe.
 <pre>
