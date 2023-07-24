@@ -2,21 +2,14 @@
     "version": 2,
     "builds": [
         {
-            "src": "api/run.py",
+            "src": "api/app.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "(.*)",
-            "dest": "api/run.py"
-        },
-        {
-            "src": "/favicon.ico",
-            "status": 200,
-            "headers": {
-                "Content-Type": "image/x-icon"
-            }
+            "dest": "api/app.py"
         }
     ]
 }
