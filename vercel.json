@@ -10,6 +10,13 @@
         {
             "src": "/(.*)",
             "dest": "api/run.py"
+        },
+        {
+            "src": "/favicon.ico",
+            "status": 200,
+            "headers": {
+                "Content-Type": "image/x-icon"
+            }
         }
     ]
 }
