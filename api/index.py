@@ -1,6 +1,6 @@
 from flask import Flask
-from controllers.GptController import GptController
-from services.GptService import GptService
+from api.controllers.GptController import GptController
+from api.services.GptService import GptService
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False

@@ -1,9 +1,9 @@
 from flask import jsonify, request
 from marshmallow import ValidationError
-from schema.RecipeSchema import RecipeSchema
-from schema.SummarySchema import SummarySchema
-from schema.TranslatorSchema import TranslatorSchema
-from schema.WritingAssistantSchema import WritingAssistantSchema
+from api.schema.RecipeSchema import RecipeSchema
+from api.schema.SummarySchema import SummarySchema
+from api.schema.TranslatorSchema import TranslatorSchema
+from api.schema.WritingAssistantSchema import WritingAssistantSchema
 
 class GptController:
     """This class receives data from the HTTP request and returns the response"""
