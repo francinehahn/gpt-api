@@ -8,8 +8,8 @@ class UserDatabase:
         try:
             connection = connect(**config)
             cursor = connection.cursor()
-            query = "INSERT INTO users_gpt (id, user_name, email, phone) VALUES (%s, %s, %s, %s)"
-            values = (id, data['user_name'], data['email'], data['phone'])
+            query = "INSERT INTO users_gpt (id, user_name, email, phone, password) VALUES (%s, %s, %s, %s, %s)"
+            values = (id, data['user_name'], data['email'], data['phone'], data['password'])
             cursor.execute(query, values)
             connection.commit()
 
@@ -21,6 +21,7 @@ class UserDatabase:
             
         except Error as err:
             raise err
+        
         finally:
             cursor.close()
             connection.close()

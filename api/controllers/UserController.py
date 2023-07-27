@@ -22,7 +22,7 @@ class UserController:
         
         except ValidationError as err:
             response = jsonify(
-                error = f"Validation error: {err}"
+                error = f"Validation error: {str(err)}"
             )
             response.status_code = 400
             return response
@@ -38,3 +38,4 @@ class UserController:
             response = jsonify(error = err)
             response.status_code = 500
             return response
+        

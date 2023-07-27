@@ -5,6 +5,7 @@ class UserSchema(Schema):
     user_name = fields.Str(required=True)
     email = fields.Str(required=True)
     phone = fields.Str(required=True)
+    password = fields.Str(required=True)
         
     @validates('user_name')
     def validate_user_name(self, user_name):
@@ -27,3 +28,8 @@ class UserSchema(Schema):
 
         if not phone.isdigit():
             raise ValidationError('The phone number must contain only numbers.')
+        
+    @validates('password')
+    def validate_password(self, password):
+        if len(password) < 8:
+            raise ValidationError('The password must have at least 8 characters.')
