@@ -46,7 +46,7 @@ class GptController:
             response = self.gpt_service().create_summary(data)
             
             response = jsonify(
-                message = "Aqui está o resumo do texto:",
+                message = "The summary has been registered successfully",
                 data = response
             )
             
@@ -74,7 +74,7 @@ class GptController:
             response = self.gpt_service().translator(data)
 
             response = jsonify(
-                message = "Aqui está a tradução que você pediu:",
+                message = "The translation has been registered successfully",
                 data = response
             )
             response.status_code = 201
@@ -101,7 +101,7 @@ class GptController:
             response = self.gpt_service().writing_assistant(data)
 
             response = jsonify(
-                message = "Aqui está o texto que você pediu:",
+                message = "The text has been registered successfully",
                 data = response
             )
             response.status_code = 201

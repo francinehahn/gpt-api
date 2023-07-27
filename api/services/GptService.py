@@ -37,6 +37,8 @@ class GptService:
     def create_summary(self, data):
         """This method receives a text and returns a summary of it"""
         try:
+            id = str(uuid.uuid4())
+
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=f"Resuma o seguinte texto: {data['text']}",
@@ -45,6 +47,9 @@ class GptService:
                 n=1,
                 stop=None
             )
+
+            self.gpt_database.create_summary(id, data['text'], response['choices'][0]['text'], data['user_id'])
+            
             return response['choices'][0]['text']
         
         except Exception as err:
@@ -53,6 +58,8 @@ class GptService:
     def translator(self, data):
         """This method receives a source language, a target language and a text and returns the translation"""
         try:
+            id = str(uuid.uuid4())
+            
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=f"Traduza o seguinte texto do {data['source_language']} para o {data['target_language']}: {data['text']}",
@@ -61,6 +68,9 @@ class GptService:
                 n=1,
                 stop=None
             )
+
+            self.gpt_database.translator(id, data['text'], response['choices'][0]['text'], data['user_id'])
+
             return response['choices'][0]['text']
         
         except Exception as err:
@@ -69,6 +79,8 @@ class GptService:
     def writing_assistant(self, data):
         """This method receives the subject of a text and returns the text"""
         try:
+            id = str(uuid.uuid4())
+
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=f"Crie um texto para: {data['text']}",
@@ -78,6 +90,8 @@ class GptService:
                 stop=None
             )
             
+            self.gpt_database.writing_assistant(id, data['text'], response['choices'][0]['text'], data['user_id'])
+
             return response['choices'][0]['text']
         
         except Exception as err:
