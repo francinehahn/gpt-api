@@ -1,6 +1,8 @@
 import openai
 from dotenv import load_dotenv
 import os
+import uuid
+from api.database.GptDatabase import GptDatabase
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -8,9 +10,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 class GptService:
     """This class receives data from the controller and returns the response from the open ai api"""
 
+    def __init__(self):
+        self.gpt_database = GptDatabase()
+
     def create_recipe(self, data):
         """This method receives ingredients and returns a recipe"""
         try:
+            id = str(uuid.uuid4())
+
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=f"Crie uma receita com os seguintes ingredientes: {data['ingredients']}",
@@ -19,6 +26,9 @@ class GptService:
                 n=1,
                 stop=None
             )
+            
+            self.gpt_database.create_recipe(id, data['ingredients'], response['choices'][0]['text'], data['user_id'])
+
             return response['choices'][0]['text']
         
         except Exception as err:

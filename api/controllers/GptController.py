@@ -15,12 +15,11 @@ class GptController:
         """This method receives ingredients and sends it to the service layer"""
         try:
             data = RecipeSchema().load(request.json)
-
             response = self.gpt_service().create_recipe(data)
             
             response = jsonify(
-                message = "Aqui está a receita:",
-                data = response,
+                message = "The recipe has been registered successfully",
+                data = response
             )
             
             response.status_code = 201

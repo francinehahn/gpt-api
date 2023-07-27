@@ -7,7 +7,6 @@ app.config["JSON_SORT_KEYS"] = False
 
 gpt_controller = GptController(GptService)
 
-
 @app.route("/create-recipe", methods=["POST"])
 def create_recipe():
     """Endpoint that receives this body {"ingredients": "frango, tomate, cebola, milho, batata, curry, leite de coco"}
