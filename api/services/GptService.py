@@ -2,7 +2,13 @@ import openai
 from dotenv import load_dotenv
 import os
 import uuid
+
 from api.database.GptDatabase import GptDatabase
+
+from api.schema.RecipeSchema import RecipeSchema
+from api.schema.SummarySchema import SummarySchema
+from api.schema.TranslatorSchema import TranslatorSchema
+from api.schema.WritingAssistantSchema import WritingAssistantSchema
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -16,6 +22,7 @@ class GptService:
     def create_recipe(self, data):
         """This method receives ingredients and returns a recipe"""
         try:
+            RecipeSchema().load(data)
             id = str(uuid.uuid4())
 
             response = openai.Completion.create(
@@ -37,6 +44,7 @@ class GptService:
     def create_summary(self, data):
         """This method receives a text and returns a summary of it"""
         try:
+            SummarySchema().load(data)
             id = str(uuid.uuid4())
 
             response = openai.Completion.create(
@@ -58,6 +66,7 @@ class GptService:
     def translator(self, data):
         """This method receives a source language, a target language and a text and returns the translation"""
         try:
+            TranslatorSchema().load(data)
             id = str(uuid.uuid4())
             
             response = openai.Completion.create(
@@ -79,6 +88,7 @@ class GptService:
     def writing_assistant(self, data):
         """This method receives the subject of a text and returns the text"""
         try:
+            WritingAssistantSchema().load(data)
             id = str(uuid.uuid4())
 
             response = openai.Completion.create(

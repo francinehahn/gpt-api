@@ -1,9 +1,5 @@
 from flask import jsonify, request
 from marshmallow import ValidationError
-from api.schema.RecipeSchema import RecipeSchema
-from api.schema.SummarySchema import SummarySchema
-from api.schema.TranslatorSchema import TranslatorSchema
-from api.schema.WritingAssistantSchema import WritingAssistantSchema
 
 class GptController:
     """This class receives data from the HTTP request and returns the response"""
@@ -14,7 +10,7 @@ class GptController:
     def create_recipe(self):
         """This method receives ingredients and sends it to the service layer"""
         try:
-            data = RecipeSchema().load(request.json)
+            data = request.json
             response = self.gpt_service().create_recipe(data)
             
             response = jsonify(
@@ -42,7 +38,7 @@ class GptController:
     def create_summary(self):
         """This method receives a text and sends it to the service layer"""
         try:
-            data = SummarySchema().load(request.json)
+            data = request.json
             response = self.gpt_service().create_summary(data)
             
             response = jsonify(
@@ -70,7 +66,7 @@ class GptController:
     def translator(self):
         """This method receives a source language, a target language and a text and sends it to the service layer"""
         try:
-            data = TranslatorSchema().load(request.json)
+            data = request.json
             response = self.gpt_service().translator(data)
 
             response = jsonify(
@@ -97,7 +93,7 @@ class GptController:
     def writing_assistant(self):
         """This method receives a subject for a text and sends it to the service layer"""
         try:
-            data = WritingAssistantSchema().load(request.json)
+            data = request.json
             response = self.gpt_service().writing_assistant(data)
 
             response = jsonify(
