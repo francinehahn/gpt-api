@@ -36,3 +36,36 @@ class SummaryDatabase:
         finally:
             cursor.close()
             connection.close()
+
+    def get_summary_by_id(self, user_id, summary_id):
+        """This method receives a user_id and a summary_id and returns the summary"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "SELECT * FROM summary_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, summary_id)
+            cursor.execute(query, values)
+            recipe = cursor.fetchone()
+            return recipe
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
+
+    def delete_summary_by_id(self, user_id, summary_id):
+        """This method receives a user_id and a summary_id and deletes the summary"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "DELETE FROM summary_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, summary_id)
+            cursor.execute(query, values)
+            connection.commit()
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()

@@ -6,6 +6,7 @@ import openai
 from dotenv import load_dotenv
 from marshmallow import ValidationError
 from api.schema.SummarySchema import SummarySchema
+from api.errors.SummaryErrors import SummaryNotFound
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -60,5 +61,21 @@ class SummaryService:
             
             return response
         
+        except Error as err:
+            raise err
+        
+    def delete_summary_by_id(self, summary_id):
+        """This method receives a user_id and a token and sends the info to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            recipe = self.summary_database.get_summary_by_id(user_id, summary_id)
+        
+            if recipe is None:
+                raise SummaryNotFound("Summary not found.")
+
+            self.summary_database.delete_summary_by_id(user_id, summary_id)
+        
+        except SummaryNotFound as err:
+            raise err
         except Error as err:
             raise err
