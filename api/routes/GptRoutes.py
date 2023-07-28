@@ -4,7 +4,7 @@ from flask import Blueprint
 from api.controllers.GptController import GptController
 from api.services.GptService import GptService
 from api.database.GptDatabase import GptDatabase
-from api.external_services.authentication import Authentication
+from api.externalServices.Authentication import Authentication
 
 gpt_blueprint = Blueprint('gpt', __name__)
 

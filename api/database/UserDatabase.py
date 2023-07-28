@@ -1,6 +1,6 @@
 """User database"""
 from mysql.connector import connect, IntegrityError, Error
-from api.connection_db.connection_db import config
+from api.connectionDb.ConnectionDb import config
 from api.errors.UserErrors import EmailAlreadyInUse, IncorrectLoginInfo
 
 class UserDatabase:

@@ -1,6 +1,6 @@
 """Gpt database"""
 from mysql.connector import connect, Error
-from api.connection_db.connection_db import config
+from api.connectionDb.ConnectionDb import config
 
 class GptDatabase:
     """This class receives data from the service layer and inserts the answer from the openAI api into the database"""

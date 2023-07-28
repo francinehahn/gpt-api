@@ -3,8 +3,8 @@ from flask import Blueprint
 from api.controllers.UserController import UserController
 from api.services.UserService import UserService
 from api.database.UserDatabase import UserDatabase
-from api.external_services.authentication import Authentication
-from api.external_services.criptography import Criptography
+from api.externalServices.Authentication import Authentication
+from api.externalServices.Criptography import Criptography
 
 user_blueprint = Blueprint('users', __name__)
 
