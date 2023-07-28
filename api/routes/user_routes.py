@@ -20,8 +20,3 @@ def create_user():
 def login():
     """Endpoint that receives the user info and returns a token"""
     return user_controller.login()
-
-@user_blueprint.route("/users/<string:email>", methods=["GET"])
-def get_user_by_email(email):
-    """Endpoint that receives an email and returns the user info"""
-    return user_controller.get_user_by_email(email)

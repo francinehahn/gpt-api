@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 from api.errors.UserErrors import EmailAlreadyInUse, UserNotFound
 
 class UserController:
-
+    """Controller layer"""
     def __init__(self, user_service):
         self.user_service = user_service
 
@@ -71,43 +71,3 @@ class UserController:
             response = jsonify(error = str(err))
             response.status_code = 500
             return response
-        
-    def get_user_by_email(self, email):
-        """This method receives an email and returns the user information"""
-        try:
-            email = request.view_args['email']
-            data = self.user_service.get_user_by_email(email)
-            response = {
-                "user_id": data[0],
-                "user_name": data[1],
-                "email": data[2],
-                "phone": data[3],
-                "password": data[4]
-            }
-
-            response = jsonify(
-                data = response
-            )
-            
-            response.status_code = 200
-            return response
-        
-        except ValidationError as err:
-            response = jsonify(
-                error = f"Validation error: {str(err)}"
-            )
-            response.status_code = 400
-            return response
-        
-        except UserNotFound as err:
-            response = jsonify(
-                error = str(err)
-            )
-            response.status_code = 404
-            return response
-        
-        except Exception as err:
-            response = jsonify(error = str(err))
-            response.status_code = 500
-            return response
-        
