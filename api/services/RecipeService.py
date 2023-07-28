@@ -64,7 +64,7 @@ class RecipeService:
         except Error as err:
             raise err
         
-    def get_recipe_by_id(self, recipe_id):
+    def delete_recipe_by_id(self, recipe_id):
         """This method receives a user_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
@@ -73,13 +73,7 @@ class RecipeService:
             if recipe is None:
                 raise RecipeNotFound("Recipe not found.")
 
-            response = {
-                "id": recipe[0],
-                "question": recipe[1],
-                "answer": recipe[2],
-                "user_id": recipe[3]
-            }
-            return response
+            self.recipe_database.delete_recipe_by_id(user_id, recipe_id)
         
         except RecipeNotFound as err:
             raise err

@@ -57,12 +57,12 @@ class RecipeController:
             response.status_code = 400
             return response
         
-    def get_recipe_by_id(self, recipe_id):
+    def delete_recipe_by_id(self, recipe_id):
         """This method receives a token and a recipe_id and sends them to the service layer"""
         try:
-            response = self.recipe_service.get_recipe_by_id(recipe_id)
+            response = self.recipe_service.delete_recipe_by_id(recipe_id)
             response = jsonify(
-                recipe = response
+                message = "The recipe has been deleted successfully."
             )
             
             response.status_code = 200

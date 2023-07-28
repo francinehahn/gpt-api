@@ -53,3 +53,19 @@ class RecipeDatabase:
         finally:
             cursor.close()
             connection.close()
+
+    def delete_recipe_by_id(self, user_id, recipe_id):
+        """This method receives a user_id and a recipe_id and returns the recipe"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "DELETE FROM recipes_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, recipe_id)
+            cursor.execute(query, values)
+            connection.commit()
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
