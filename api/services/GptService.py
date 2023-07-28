@@ -76,7 +76,7 @@ class GptService:
         except Error as err:
             raise err
         
-    def translator(self, data):
+    def create_translation(self, data):
         """This method receives a source language, a target language and a text and returns the translation"""
         try:
             TranslatorSchema().load(data)
@@ -93,7 +93,7 @@ class GptService:
                 stop=None
             )
 
-            self.gpt_database.translator(translator_id, data['text'], response['choices'][0]['text'], user_id)
+            self.gpt_database.create_translation(translator_id, data['text'], response['choices'][0]['text'], user_id)
 
             return response['choices'][0]['text']
         
@@ -102,7 +102,7 @@ class GptService:
         except Error as err:
             raise err
     
-    def writing_assistant(self, data):
+    def create_text(self, data):
         """This method receives the subject of a text and returns the text"""
         try:
             WritingAssistantSchema().load(data)
@@ -119,7 +119,7 @@ class GptService:
                 stop=None
             )
             
-            self.gpt_database.writing_assistant(writing_assistant_id, data['text'], response['choices'][0]['text'], user_id)
+            self.gpt_database.create_text(writing_assistant_id, data['text'], response['choices'][0]['text'], user_id)
 
             return response['choices'][0]['text']
         

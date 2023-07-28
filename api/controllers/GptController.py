@@ -65,11 +65,11 @@ class GptController:
             response.status_code = 400
             return response
         
-    def translator(self):
+    def create_translation(self):
         """This method receives a source language, a target language and a text and sends it to the service layer"""
         try:
             data = request.json
-            response = self.gpt_service.translator(data)
+            response = self.gpt_service.create_translation(data)
 
             response = jsonify(
                 message = "The translation has been registered successfully",
@@ -92,11 +92,11 @@ class GptController:
             response.status_code = 400
             return response
         
-    def writing_assistant(self):
+    def create_text(self):
         """This method receives a subject for a text and sends it to the service layer"""
         try:
             data = request.json
-            response = self.gpt_service.writing_assistant(data)
+            response = self.gpt_service.create_text(data)
 
             response = jsonify(
                 message = "The text has been registered successfully",

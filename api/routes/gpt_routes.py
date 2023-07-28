@@ -18,20 +18,20 @@ def create_recipe():
     """Endpoint that receives ingredients and returns a recipe"""
     return gpt_controller.create_recipe()
 
-@gpt_blueprint.route("/summary", methods=["POST"])
+@gpt_blueprint.route("/create-summary", methods=["POST"])
 @jwt_required()
 def create_summary():
     """Endpoint that receives this body {"text": "História do titanic"} and return a summary"""
     return gpt_controller.create_summary()
 
-@gpt_blueprint.route("/translator", methods=["POST"])
+@gpt_blueprint.route("/create-translation", methods=["POST"])
 @jwt_required()
 def translator():
     """Endpoint that receives a source_language, a target_language and a text to be translated"""
-    return gpt_controller.translator()
+    return gpt_controller.create_translation()
 
-@gpt_blueprint.route("/writing-assistant", methods=["POST"])
+@gpt_blueprint.route("/create-text", methods=["POST"])
 @jwt_required()
-def writing_assistant():
+def create_text():
     """Endpoint that receives a subject and returns a text that addresses the subject"""
-    return gpt_controller.writing_assistant()
+    return gpt_controller.create_text()

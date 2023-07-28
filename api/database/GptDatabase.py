@@ -37,7 +37,7 @@ class GptDatabase:
             cursor.close()
             connection.close()
 
-    def translator(self, translator_id, text, answer, user_id):
+    def create_translation(self, translator_id, text, answer, user_id):
         """This method receives the translation from the service layer and inserts it into the database"""
         try:
             connection = connect(**config)
@@ -53,7 +53,7 @@ class GptDatabase:
             cursor.close()
             connection.close()
 
-    def writing_assistant(self, writing_assistant_id, text, answer, user_id):
+    def create_text(self, writing_assistant_id, text, answer, user_id):
         """This method receives the text from the service layer and inserts it into the database"""
         try:
             connection = connect(**config)
