@@ -23,3 +23,9 @@ def create_text():
 def get_texts():
     """Endpoint that receives a token and returns the texts from the user"""
     return text_controller.get_texts()
+
+@text_blueprint.route("/delete-text/<string:text_id>", methods=["DELETE"])
+@jwt_required()
+def delete_text_by_id(text_id):
+    """Endpoint that receives a token and a text_id and deletes the text"""
+    return text_controller.delete_text_by_id(text_id)

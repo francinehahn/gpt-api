@@ -36,3 +36,36 @@ class TextDatabase:
         finally:
             cursor.close()
             connection.close()
+
+    def get_text_by_id(self, user_id, text_id):
+        """This method receives a user_id and a text_id and returns the text"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "SELECT * FROM writing_assistant_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, text_id)
+            cursor.execute(query, values)
+            recipe = cursor.fetchone()
+            return recipe
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
+
+    def delete_text_by_id(self, user_id, text_id):
+        """This method receives a user_id and a text_id and deletes the text"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "DELETE FROM writing_assistant_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, text_id)
+            cursor.execute(query, values)
+            connection.commit()
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()

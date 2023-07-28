@@ -65,12 +65,12 @@ class SummaryService:
             raise err
         
     def delete_summary_by_id(self, summary_id):
-        """This method receives a user_id and a token and sends the info to the database layer"""
+        """This method receives a summary_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
-            recipe = self.summary_database.get_summary_by_id(user_id, summary_id)
+            summary = self.summary_database.get_summary_by_id(user_id, summary_id)
         
-            if recipe is None:
+            if summary is None:
                 raise SummaryNotFound("Summary not found.")
 
             self.summary_database.delete_summary_by_id(user_id, summary_id)

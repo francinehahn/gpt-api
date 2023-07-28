@@ -2,6 +2,7 @@
 from marshmallow import ValidationError
 from mysql.connector import Error
 from flask import jsonify, request
+from api.errors.TextErrors import TextNotFound
 
 class TextController:
     """This class receives data from the HTTP request and returns the response"""
@@ -24,14 +25,14 @@ class TextController:
     
         except ValidationError as err:
             response = jsonify(
-                message = f"Validation error: {err}"
+                error = f"Validation error: {err}"
             )
             response.status_code = 422
             return response
 
         except Error as err:
             response = jsonify(
-                message = f"Unexpected error: {err}"
+                error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response
@@ -50,7 +51,32 @@ class TextController:
         
         except Error as err:
             response = jsonify(
-                message = f"Unexpected error: {err}"
+                error = f"Unexpected error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
+    def delete_text_by_id(self, text_id):
+        """This method receives a token and a text_id and sends them to the service layer"""
+        try:
+            response = self.text_service.delete_text_by_id(text_id)
+            response = jsonify(
+                message = "The text has been deleted successfully."
+            )
+            
+            response.status_code = 200
+            return response
+        
+        except TextNotFound as err:
+            response = jsonify(
+                error = str(err)
+            )
+            response.status_code = 404
+            return response
+        
+        except Error as err:
+            response = jsonify(
+                error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response

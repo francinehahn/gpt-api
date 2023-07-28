@@ -27,5 +27,5 @@ def get_recipes():
 @recipe_blueprint.route("/delete-recipe/<string:recipe_id>", methods=["DELETE"])
 @jwt_required()
 def delete_recipe_by_id(recipe_id):
-    """Endpoint that receives a token and a recipe_id and deletes the recipe from the user"""
+    """Endpoint that receives a token and a recipe_id and deletes the recipe"""
     return recipe_controller.delete_recipe_by_id(recipe_id)

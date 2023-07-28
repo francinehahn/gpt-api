@@ -27,5 +27,5 @@ def get_summaries():
 @summary_blueprint.route("/delete-summary/<string:summary_id>", methods=["DELETE"])
 @jwt_required()
 def delete_summary_by_id(summary_id):
-    """Endpoint that receives a token and a recipe_id and deletes the recipe from the user"""
+    """Endpoint that receives a token and a summary_id and deletes the summary"""
     return summary_controller.delete_summary_by_id(summary_id)

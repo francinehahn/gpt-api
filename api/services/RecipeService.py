@@ -65,7 +65,7 @@ class RecipeService:
             raise err
         
     def delete_recipe_by_id(self, recipe_id):
-        """This method receives a user_id and a token and sends the info to the database layer"""
+        """This method receives a recipe_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
             recipe = self.recipe_database.get_recipe_by_id(user_id, recipe_id)

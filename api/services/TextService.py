@@ -6,6 +6,7 @@ import openai
 from dotenv import load_dotenv
 from marshmallow import ValidationError
 from api.schema.WritingAssistantSchema import WritingAssistantSchema
+from api.errors.TextErrors import TextNotFound
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -60,5 +61,21 @@ class TextService:
             
             return response
         
+        except Error as err:
+            raise err
+        
+    def delete_text_by_id(self, text_id):
+        """This method receives a text_id and a token and sends the info to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            text = self.text_database.get_text_by_id(user_id, text_id)
+        
+            if text is None:
+                raise TextNotFound("Text not found.")
+
+            self.text_database.delete_text_by_id(user_id, text_id)
+        
+        except TextNotFound as err:
+            raise err
         except Error as err:
             raise err
