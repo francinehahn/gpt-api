@@ -53,6 +53,22 @@ class GptDatabase:
             cursor.close()
             connection.close()
 
+    def get_summaries(self, user_id):
+        """This method receives a user_id and returns all the summaries from the account"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "SELECT * FROM summary_gpt WHERE user_id = (%s)"
+            cursor.execute(query, (user_id,))
+            summaries = cursor.fetchall()
+            return summaries
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
+
     def create_translation(self, translator_id, text, answer, user_id):
         """This method receives the translation from the service layer and inserts it into the database"""
         try:

@@ -64,7 +64,6 @@ class GptService:
                     "answer": recipe[2],
                     "user_id": recipe[3]
                 })
-            print("RESPONSE: ", response)
             
             return response
         
@@ -96,7 +95,27 @@ class GptService:
             raise err
         except Error as err:
             raise err
+
+    def get_summaries(self):
+        """This method receives a user_id and sends it to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            summaries = self.gpt_database.get_summaries(user_id)
+
+            response = []
+            for summary in summaries:
+                response.append({
+                    "id": summary[0],
+                    "question": summary[1],
+                    "answer": summary[2],
+                    "user_id": summary[3]
+                })
+            
+            return response
         
+        except Error as err:
+            raise err
+         
     def create_translation(self, data):
         """This method receives a source language, a target language and a text and returns the translation"""
         try:

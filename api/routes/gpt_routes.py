@@ -41,3 +41,9 @@ def create_text():
 def get_recipes():
     """Endpoint that receives a token and returns the recipes from the user"""
     return gpt_controller.get_recipes()
+
+@gpt_blueprint.route("/get-summaries", methods=["GET"])
+@jwt_required()
+def get_summaries():
+    """Endpoint that receives a token and returns the summaries from the user"""
+    return gpt_controller.get_summaries()
