@@ -16,20 +16,18 @@ class UserService:
         """This method receives user data from the controller and sends it to the database layer"""
         try:
             UserSchema().load(data)
-            id = str(uuid.uuid4())
+            user_id = str(uuid.uuid4())
 
             #criptography
             hashed_password = Criptography.hash_password(data['password'])
             data['password'] = hashed_password
 
-            self.user_database.create_user(id, data)
+            self.user_database.create_user(user_id, data)
         
         except EmailAlreadyInUse as err:
             raise err
         except ValidationError as err:
             raise err
-        except Exception as err:
-            raise Exception(f"Unexpected error: {err}") from err
         
     def login(self, data):
         """This method receives user data from the controller and returns an auth token"""
@@ -50,5 +48,3 @@ class UserService:
             raise err
         except ValidationError as err:
             raise err
-        except Exception as err:
-            raise Exception(f"Unexpected error: {err}") from err

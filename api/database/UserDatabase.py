@@ -1,15 +1,17 @@
+"""User database"""
 from mysql.connector import connect, IntegrityError, Error
 from api.connection_db.connection_db import config
 from api.errors.UserErrors import EmailAlreadyInUse, UserNotFound
 
 class UserDatabase:
-    def create_user(self, id, data):
+    """Database layer"""
+    def create_user(self, user_id, data):
         """This method receives the user info from the service layer and inserts it into the database"""
         try:
             connection = connect(**config)
             cursor = connection.cursor()
             query = "INSERT INTO users_gpt (id, user_name, email, phone, password) VALUES (%s, %s, %s, %s, %s)"
-            values = (id, data['user_name'], data['email'], data['phone'], data['password'])
+            values = (user_id, data['user_name'], data['email'], data['phone'], data['password'])
             cursor.execute(query, values)
             connection.commit()
 

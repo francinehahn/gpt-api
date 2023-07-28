@@ -35,11 +35,6 @@ class UserController:
             response.status_code = 400
             return response
         
-        except Exception as err:
-            response = jsonify(error = str(err))
-            response.status_code = 500
-            return response
-        
     def login(self):
         """This method receives data from a user and returns an auth token"""
         try:
@@ -65,9 +60,4 @@ class UserController:
                 error = str(err)
             )
             response.status_code = 404
-            return response
-        
-        except Exception as err:
-            response = jsonify(error = str(err))
-            response.status_code = 500
             return response
