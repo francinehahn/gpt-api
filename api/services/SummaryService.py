@@ -45,7 +45,7 @@ class SummaryService:
             raise err
 
     def get_summaries(self):
-        """This method receives a user_id and sends it to the database layer"""
+        """This method receives a token and sends the user_id to the database layer"""
         try:
             user_id = self.authentication.get_identity()
             summaries = self.summary_database.get_summaries(user_id)

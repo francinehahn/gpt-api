@@ -19,7 +19,7 @@ class TextService:
         self.authentication = authentication
 
     def create_text(self, data):
-        """This method receives the subject of a text and returns the text"""
+        """This method receives a subject and returns the text"""
         try:
             WritingAssistantSchema().load(data)
             
@@ -45,7 +45,7 @@ class TextService:
             raise err
     
     def get_texts(self):
-        """This method receives a user_id and sends it to the database layer"""
+        """This method receives a token and sends the user_id to the database layer"""
         try:
             user_id = self.authentication.get_identity()
             texts = self.text_database.get_texts(user_id)

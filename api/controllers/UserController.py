@@ -1,4 +1,4 @@
-"""User controller layer"""
+"""User controller"""
 from flask import jsonify, request
 from marshmallow import ValidationError
 from mysql.connector import Error
@@ -10,13 +10,13 @@ class UserController:
         self.user_service = user_service
 
     def create_user(self):
-        """This method receives data from a new user and sends it to the service layer"""
+        """This method receives data from a new user and returns a message in case of success"""
         try:
             data = request.json
             self.user_service.create_user(data)
             
             response = jsonify(
-                message = "The user has been registered successfully"
+                message = "The user has been registered successfully."
             )
             
             response.status_code = 201
@@ -38,7 +38,7 @@ class UserController:
         
         except Error as err:
             response = jsonify(
-                message = f"Unexpected error: {err}"
+                error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response
@@ -72,7 +72,7 @@ class UserController:
         
         except Error as err:
             response = jsonify(
-                message = f"Unexpected error: {err}"
+                error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response

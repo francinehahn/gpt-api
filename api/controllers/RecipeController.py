@@ -11,7 +11,7 @@ class RecipeController:
         self.recipe_service = recipe_service
 
     def create_recipe(self):
-        """This method receives ingredients and sends it to the service layer"""
+        """This method receives ingredients and returns a recipe"""
         try:
             data = request.json
             response = self.recipe_service.create_recipe(data)
@@ -39,7 +39,7 @@ class RecipeController:
             return response
         
     def get_recipes(self):
-        """This method receives a token and sends it to the service layer"""
+        """This method receives a token and returns the recipes registered in the user account"""
         try:
             response = self.recipe_service.get_recipes()
             
@@ -58,7 +58,7 @@ class RecipeController:
             return response
         
     def delete_recipe_by_id(self, recipe_id):
-        """This method receives a token and a recipe_id and sends them to the service layer"""
+        """This method receives a token and a recipe_id and returns a message in case of success"""
         try:
             response = self.recipe_service.delete_recipe_by_id(recipe_id)
             response = jsonify(

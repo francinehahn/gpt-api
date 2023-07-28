@@ -15,7 +15,7 @@ class UserService:
         self.criptography = criptography
 
     def create_user(self, data):
-        """This method receives user data from the controller and sends it to the database layer"""
+        """This method verifies the user data and sends it to the database layer"""
         try:
             UserSchema().load(data)
             user_id = str(uuid.uuid4())

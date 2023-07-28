@@ -45,7 +45,7 @@ class TranslatorService:
             raise err
     
     def get_translations(self):
-        """This method receives a user_id and sends it to the database layer"""
+        """This method receives a token and sends the user_id to the database layer"""
         try:
             user_id = self.authentication.get_identity()
             translations = self.translator_database.get_translations(user_id)

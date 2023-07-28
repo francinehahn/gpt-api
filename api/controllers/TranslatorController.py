@@ -11,7 +11,7 @@ class TranslatorController:
         self.translator_service = translator_service
          
     def create_translation(self):
-        """This method receives a source language, a target language and a text and sends it to the service layer"""
+        """This method receives a source language, a target language and a text and returns the translation"""
         try:
             data = request.json
             response = self.translator_service.create_translation(data)
@@ -38,7 +38,7 @@ class TranslatorController:
             return response
 
     def get_translations(self):
-        """This method receives a token and sends it to the service layer"""
+        """This method receives a token and returns all the translations registered in the user account"""
         try:
             response = self.translator_service.get_translations()
             
@@ -57,7 +57,7 @@ class TranslatorController:
             return response
         
     def delete_translation_by_id(self, translation_id):
-        """This method receives a token and a translation_id and sends them to the service layer"""
+        """This method receives a token and a translation_id and returns a message in case of success"""
         try:
             response = self.translator_service.delete_translation_by_id(translation_id)
             response = jsonify(

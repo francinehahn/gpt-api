@@ -11,7 +11,7 @@ class SummaryController:
         self.summary_service = summary_service
     
     def create_summary(self):
-        """This method receives a text and sends it to the service layer"""
+        """This method receives a text and returns a summary of it"""
         try:
             data = request.json
             response = self.summary_service.create_summary(data)
@@ -39,7 +39,7 @@ class SummaryController:
             return response
 
     def get_summaries(self):
-        """This method receives a token and sends it to the service layer"""
+        """This method receives a token and returns all the summaryes registered in the user account"""
         try:
             response = self.summary_service.get_summaries()
             
@@ -58,7 +58,7 @@ class SummaryController:
             return response
         
     def delete_summary_by_id(self, summary_id):
-        """This method receives a token and a summary_id and sends them to the service layer"""
+        """This method receives a token and a summary_id and returns a message in case of success"""
         try:
             response = self.summary_service.delete_summary_by_id(summary_id)
             response = jsonify(

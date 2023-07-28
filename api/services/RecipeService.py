@@ -45,7 +45,7 @@ class RecipeService:
             raise err
         
     def get_recipes(self):
-        """This method receives a user_id and sends it to the database layer"""
+        """This method receives a token and sends the user_id to the database layer"""
         try:
             user_id = self.authentication.get_identity()
             recipes = self.recipe_database.get_recipes(user_id)

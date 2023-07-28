@@ -11,7 +11,7 @@ class TextController:
         self.text_service = text_service
 
     def create_text(self):
-        """This method receives a subject for a text and sends it to the service layer"""
+        """This method receives a subject and returns a text"""
         try:
             data = request.json
             response = self.text_service.create_text(data)
@@ -38,7 +38,7 @@ class TextController:
             return response
     
     def get_texts(self):
-        """This method receives a token and sends it to the service layer"""
+        """This method receives a token and returns all the texts registered in the user account"""
         try:
             response = self.text_service.get_texts()
             
@@ -57,7 +57,7 @@ class TextController:
             return response
         
     def delete_text_by_id(self, text_id):
-        """This method receives a token and a text_id and sends them to the service layer"""
+        """This method receives a token and a text_id and returns a message in case of success"""
         try:
             response = self.text_service.delete_text_by_id(text_id)
             response = jsonify(

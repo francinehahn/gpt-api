@@ -15,8 +15,6 @@ class UserDatabase:
             cursor.execute(query, values)
             connection.commit()
 
-            return True
-
         except IntegrityError as err:
             if err.errno == 1062:
                 raise EmailAlreadyInUse('This email is already in use.') from err
