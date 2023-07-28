@@ -187,3 +187,23 @@ class GptService:
             raise err
         except Error as err:
             raise err
+    
+    def get_texts(self):
+        """This method receives a user_id and sends it to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            texts = self.gpt_database.get_texts(user_id)
+
+            response = []
+            for text in texts:
+                response.append({
+                    "id": text[0],
+                    "question": text[1],
+                    "answer": text[2],
+                    "user_id": text[3]
+                })
+            
+            return response
+        
+        except Error as err:
+            raise err

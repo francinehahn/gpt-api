@@ -116,3 +116,19 @@ class GptDatabase:
         finally:
             cursor.close()
             connection.close()
+
+    def get_texts(self, user_id):
+        """This method receives a user_id and returns all the texts from the account"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "SELECT * FROM writing_assistant_gpt WHERE user_id = (%s)"
+            cursor.execute(query, (user_id,))
+            texts = cursor.fetchall()
+            return texts
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()

@@ -53,3 +53,9 @@ def get_summaries():
 def get_translations():
     """Endpoint that receives a token and returns the translations from the user"""
     return gpt_controller.get_translations()
+
+@gpt_blueprint.route("/get-texts", methods=["GET"])
+@jwt_required()
+def get_texts():
+    """Endpoint that receives a token and returns the texts from the user"""
+    return gpt_controller.get_texts()
