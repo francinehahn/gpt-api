@@ -20,6 +20,22 @@ class GptDatabase:
         finally:
             cursor.close()
             connection.close()
+    
+    def get_recipes(self, user_id):
+        """This method receives a user_id and returns all the recipes from the account"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "SELECT * FROM recipes_gpt WHERE user_id = (%s)"
+            cursor.execute(query, (user_id,))
+            recipes = cursor.fetchall()
+            return recipes
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
 
     def create_summary(self, summary_id, text, answer, user_id):
         """This method receives the summary from the service layer and inserts it into the database"""

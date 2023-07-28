@@ -37,6 +37,25 @@ class GptController:
             response.status_code = 400
             return response
         
+    def get_recipes(self):
+        """This method receives a token and sends it to the service layer"""
+        try:
+            response = self.gpt_service.get_recipes()
+            
+            response = jsonify(
+                recipes = response
+            )
+            
+            response.status_code = 200
+            return response
+        
+        except Error as err:
+            response = jsonify(
+                message = f"Unexpected error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
     def create_summary(self):
         """This method receives a text and sends it to the service layer"""
         try:

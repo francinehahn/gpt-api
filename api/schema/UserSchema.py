@@ -1,6 +1,6 @@
 """User schema"""
-from marshmallow import Schema, fields, validates, ValidationError
 import re
+from marshmallow import Schema, fields, validates, ValidationError
 
 class UserSchema(Schema):
     """Validation of the create user input"""

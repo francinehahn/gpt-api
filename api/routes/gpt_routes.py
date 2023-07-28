@@ -35,3 +35,9 @@ def translator():
 def create_text():
     """Endpoint that receives a subject and returns a text that addresses the subject"""
     return gpt_controller.create_text()
+
+@gpt_blueprint.route("/get-recipes", methods=["GET"])
+@jwt_required()
+def get_recipes():
+    """Endpoint that receives a token and returns the recipes from the user"""
+    return gpt_controller.get_recipes()

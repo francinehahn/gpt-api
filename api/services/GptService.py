@@ -49,6 +49,27 @@ class GptService:
             raise err
         except Error as err:
             raise err
+        
+    def get_recipes(self):
+        """This method receives a user_id and sends it to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            recipes = self.gpt_database.get_recipes(user_id)
+
+            response = []
+            for recipe in recipes:
+                response.append({
+                    "id": recipe[0],
+                    "question": recipe[1],
+                    "answer": recipe[2],
+                    "user_id": recipe[3]
+                })
+            print("RESPONSE: ", response)
+            
+            return response
+        
+        except Error as err:
+            raise err
     
     def create_summary(self, data):
         """This method receives a text and returns a summary of it"""
