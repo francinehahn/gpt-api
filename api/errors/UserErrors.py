@@ -1,4 +1,4 @@
-"""Errors"""
+"""User Errors"""
 class EmailAlreadyInUse(Exception):
     pass
 

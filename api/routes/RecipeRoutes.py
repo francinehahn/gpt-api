@@ -23,3 +23,9 @@ def create_recipe():
 def get_recipes():
     """Endpoint that receives a token and returns the recipes from the user"""
     return recipe_controller.get_recipes()
+
+@recipe_blueprint.route("/get-recipe/<string:recipe_id>", methods=["GET"])
+@jwt_required()
+def get_recipe_by_id(recipe_id):
+    """Endpoint that receives a token and a recipe_id and returns the recipe from the user"""
+    return recipe_controller.get_recipe_by_id(recipe_id)
