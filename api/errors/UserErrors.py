@@ -1,5 +1,6 @@
+"""Errors"""
 class EmailAlreadyInUse(Exception):
     pass
 
-class UserNotFound(Exception):
+class IncorrectLoginInfo(Exception):
     pass

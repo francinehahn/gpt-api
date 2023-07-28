@@ -1,7 +1,8 @@
 """User controller layer"""
 from flask import jsonify, request
 from marshmallow import ValidationError
-from api.errors.UserErrors import EmailAlreadyInUse, UserNotFound
+from mysql.connector import Error
+from api.errors.UserErrors import EmailAlreadyInUse, IncorrectLoginInfo
 
 class UserController:
     """Controller layer"""
@@ -25,12 +26,19 @@ class UserController:
             response = jsonify(
                 error = f"Validation error: {str(err)}"
             )
-            response.status_code = 400
+            response.status_code = 422
             return response
         
         except EmailAlreadyInUse as err:
             response = jsonify(
                 error = str(err)
+            )
+            response.status_code = 409
+            return response
+        
+        except Error as err:
+            response = jsonify(
+                message = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response
@@ -52,12 +60,19 @@ class UserController:
             response = jsonify(
                 error = f"Validation error: {str(err)}"
             )
-            response.status_code = 400
+            response.status_code = 422
             return response
         
-        except UserNotFound as err:
+        except IncorrectLoginInfo as err:
             response = jsonify(
                 error = str(err)
             )
-            response.status_code = 404
+            response.status_code = 422
+            return response
+        
+        except Error as err:
+            response = jsonify(
+                message = f"Unexpected error: {err}"
+            )
+            response.status_code = 400
             return response

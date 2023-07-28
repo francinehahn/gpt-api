@@ -1,7 +1,8 @@
+"""Translator schema"""
 from marshmallow import Schema, fields
 
 class TranslatorSchema(Schema):
-    user_id = fields.Str(required=True)
+    """Validation of the translator input"""
     source_language = fields.Str(required=True)
     target_language = fields.Str(required=True)
     text = fields.Str(required=True)

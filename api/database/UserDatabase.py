@@ -1,7 +1,7 @@
 """User database"""
 from mysql.connector import connect, IntegrityError, Error
 from api.connection_db.connection_db import config
-from api.errors.UserErrors import EmailAlreadyInUse, UserNotFound
+from api.errors.UserErrors import EmailAlreadyInUse, IncorrectLoginInfo
 
 class UserDatabase:
     """Database layer"""
@@ -40,7 +40,7 @@ class UserDatabase:
             if user:
                 return user
             else:
-                raise UserNotFound("Invalid user information.")
+                raise IncorrectLoginInfo("Email or password are incorrect.")
 
         except Error as err:
             raise err

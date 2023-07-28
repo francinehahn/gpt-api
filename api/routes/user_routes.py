@@ -4,11 +4,12 @@ from api.controllers.UserController import UserController
 from api.services.UserService import UserService
 from api.database.UserDatabase import UserDatabase
 from api.external_services.authentication import Authentication
+from api.external_services.criptography import Criptography
 
 user_blueprint = Blueprint('users', __name__)
 
 user_database = UserDatabase()
-user_service = UserService(user_database, Authentication)
+user_service = UserService(user_database, Authentication, Criptography)
 user_controller = UserController(user_service)
 
 @user_blueprint.route("/users/signup", methods=["POST"])
