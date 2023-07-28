@@ -45,8 +45,8 @@ class TextDatabase:
             query = "SELECT * FROM writing_assistant_gpt WHERE user_id = (%s) AND id = (%s)"
             values = (user_id, text_id)
             cursor.execute(query, values)
-            recipe = cursor.fetchone()
-            return recipe
+            text = cursor.fetchone()
+            return text
 
         except Error as err:
             raise err

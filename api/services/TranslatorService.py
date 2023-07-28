@@ -6,6 +6,7 @@ import openai
 from dotenv import load_dotenv
 from marshmallow import ValidationError
 from api.schema.TranslatorSchema import TranslatorSchema
+from api.errors.TranslatorErrors import TranslationNotFound
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -60,5 +61,21 @@ class TranslatorService:
             
             return response
         
+        except Error as err:
+            raise err
+        
+    def delete_translation_by_id(self, translation_id):
+        """This method receives a translation_id and a token and sends the info to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            translation = self.translator_database.get_translation_by_id(user_id, translation_id)
+        
+            if translation is None:
+                raise TranslationNotFound("Translation not found.")
+
+            self.translator_database.delete_translation_by_id(user_id, translation_id)
+        
+        except TranslationNotFound as err:
+            raise err
         except Error as err:
             raise err

@@ -36,3 +36,36 @@ class TranslatorDatabase:
         finally:
             cursor.close()
             connection.close()
+
+    def get_translation_by_id(self, user_id, translation_id):
+        """This method receives a user_id and a translation_id and returns the translation"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "SELECT * FROM translator_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, translation_id)
+            cursor.execute(query, values)
+            translation = cursor.fetchone()
+            return translation
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
+
+    def delete_translation_by_id(self, user_id, translation_id):
+        """This method receives a user_id and a translation_id and deletes the translation"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "DELETE FROM translator_gpt WHERE user_id = (%s) AND id = (%s)"
+            values = (user_id, translation_id)
+            cursor.execute(query, values)
+            connection.commit()
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()

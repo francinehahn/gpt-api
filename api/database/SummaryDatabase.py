@@ -45,8 +45,8 @@ class SummaryDatabase:
             query = "SELECT * FROM summary_gpt WHERE user_id = (%s) AND id = (%s)"
             values = (user_id, summary_id)
             cursor.execute(query, values)
-            recipe = cursor.fetchone()
-            return recipe
+            summary = cursor.fetchone()
+            return summary
 
         except Error as err:
             raise err

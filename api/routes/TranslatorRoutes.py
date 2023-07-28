@@ -23,3 +23,9 @@ def create_translation():
 def get_translations():
     """Endpoint that receives a token and returns the translations from the user"""
     return translator_controller.get_translations()
+
+@translator_blueprint.route("/delete-translation/<string:translation_id>", methods=["DELETE"])
+@jwt_required()
+def delete_translation_by_id(translation_id):
+    """Endpoint that receives a token and a translation_id and deletes the translation"""
+    return translator_controller.delete_translation_by_id(translation_id)

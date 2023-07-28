@@ -2,6 +2,7 @@
 from marshmallow import ValidationError
 from mysql.connector import Error
 from flask import jsonify, request
+from api.errors.TranslatorErrors import TranslationNotFound
 
 class TranslatorController:
     """This class receives data from the HTTP request and returns the response"""
@@ -24,14 +25,14 @@ class TranslatorController:
     
         except ValidationError as err:
             response = jsonify(
-                message = f"Validation error: {err}"
+                error = f"Validation error: {err}"
             )
             response.status_code = 422
             return response
     
         except Error as err:
             response = jsonify(
-                message = f"Unexpected error: {err}"
+                error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response
@@ -50,7 +51,32 @@ class TranslatorController:
         
         except Error as err:
             response = jsonify(
-                message = f"Unexpected error: {err}"
+                error = f"Unexpected error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
+    def delete_translation_by_id(self, translation_id):
+        """This method receives a token and a translation_id and sends them to the service layer"""
+        try:
+            response = self.translator_service.delete_translation_by_id(translation_id)
+            response = jsonify(
+                message = "The translation has been deleted successfully."
+            )
+            
+            response.status_code = 200
+            return response
+        
+        except TranslationNotFound as err:
+            response = jsonify(
+                error = str(err)
+            )
+            response.status_code = 404
+            return response
+        
+        except Error as err:
+            response = jsonify(
+                error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response
