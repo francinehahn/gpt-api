@@ -16,7 +16,8 @@ This is an API REST that consumes data from the OpenAI API.
 https://gpt-api-delta.vercel.app
 
 ## ☑️ Requests
-- `POST Signup: https://gpt-api-delta.vercel.app/signup`
+- ✅ `POST Signup: https://gpt-api-delta.vercel.app/signup`
+<br/>
 Body:
 <pre>
     <code>
@@ -29,8 +30,12 @@ Body:
     </code>
 </pre>
 
-- `POST Login: https://gpt-api-delta.vercel.app/login`
+<br/>
+<br/>
+
+- ✅ `POST Login: https://gpt-api-delta.vercel.app/login`
 This request will return an auth token that should be used in all the other requests.
+<br/>
 Body:
 <pre>
     <code>
@@ -41,9 +46,12 @@ Body:
     </code>
 </pre>
 
+<br/>
+<br/>
 
-- `POST Create A Summary: https://gpt-api-delta.vercel.app/create-summary`
+- ✅ `POST Create A Summary: https://gpt-api-delta.vercel.app/create-summary`
 The user provides the auth token and a text and the endpoint returns a summary of it.
+<br/>
 Headers:
 <pre>
     <code>
@@ -52,7 +60,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Body:
 <pre>
     <code>
@@ -62,8 +70,12 @@ Body:
     </code>
 </pre>
 
-- `POST Create A Recipe: https://gpt-api-delta.vercel.app/create-recipe`
+<br/>
+<br/>
+
+- ✅ `POST Create A Recipe: https://gpt-api-delta.vercel.app/create-recipe`
 The user provides the ingredients and the endpoint returns a recipe.
+<br/>
 Headers:
 <pre>
     <code>
@@ -72,7 +84,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Body:
 <pre>
     <code>
@@ -82,8 +94,12 @@ Body:
     </code>
 </pre>
 
-- `POST Create Translation: https://gpt-api-delta.vercel.app/create-translation`
+<br/>
+<br/>
+
+- ✅ `POST Create Translation: https://gpt-api-delta.vercel.app/create-translation`
 The user provides the source language, the target language and the text to be translated.
+<br/>
 Headers:
 <pre>
     <code>
@@ -92,7 +108,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Body:
 <pre>
     <code>
@@ -104,8 +120,12 @@ Body:
     </code>
 </pre>
 
-- `POST Create A Text: https://gpt-api-delta.vercel.app/create-text`
+<br/>
+<br/>
+
+- ✅ `POST Create A Text: https://gpt-api-delta.vercel.app/create-text`
 The user provides the subject of the text and the endpoint returns the text.
+<br/>
 Headers:
 <pre>
     <code>
@@ -114,7 +134,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Body:
 <pre>
     <code>
@@ -124,8 +144,12 @@ Body:
     </code>
 </pre>
 
-- `GET Get Recipes By User Id: https://gpt-api-delta.vercel.app/get-recipes`
+<br/>
+<br/>
+
+- ✅ `GET Get Recipes By User Id: https://gpt-api-delta.vercel.app/get-recipes`
 This request returns all the recipes registerd in the user account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -135,8 +159,12 @@ Headers:
     </code>
 </pre>
 
-- `GET Get Summaries By User Id: https://gpt-api-delta.vercel.app/get-summaries`
+<br/>
+<br/>
+
+- ✅ `GET Get Summaries By User Id: https://gpt-api-delta.vercel.app/get-summaries`
 This request returns all the summaries registerd in the user account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -146,8 +174,12 @@ Headers:
     </code>
 </pre>
 
-- `GET Get Translations By User Id: https://gpt-api-delta.vercel.app/get-translations`
+<br/>
+<br/>
+
+- ✅ `GET Get Translations By User Id: https://gpt-api-delta.vercel.app/get-translations`
 This request returns all the translations registerd in the user account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -157,8 +189,12 @@ Headers:
     </code>
 </pre>
 
-- `GET Get Texts By User Id: https://gpt-api-delta.vercel.app/get-texts`
+<br/>
+<br/>
+
+- ✅ `GET Get Texts By User Id: https://gpt-api-delta.vercel.app/get-texts`
 This request returns all the texts registerd in the user account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -168,8 +204,12 @@ Headers:
     </code>
 </pre>
 
-- `DELETE Delete Recipe By Id: https://gpt-api-delta.vercel.app/delete-recipe/:recipe_id`
+<br/>
+<br/>
+
+- ✅ `DELETE Delete Recipe By Id: https://gpt-api-delta.vercel.app/delete-recipe/:recipe_id`
 This request deletes a recipe from the account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -178,7 +218,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Path params:
 <pre>
     <code>
@@ -188,8 +228,12 @@ Path params:
     </code>
 </pre>
 
-- `DELETE Delete Summary By Id: https://gpt-api-delta.vercel.app/delete-summary/:summary_id`
+<br/>
+<br/>
+
+- ✅ `DELETE Delete Summary By Id: https://gpt-api-delta.vercel.app/delete-summary/:summary_id`
 This request deletes a summary from the account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -198,7 +242,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Path params:
 <pre>
     <code>
@@ -208,8 +252,12 @@ Path params:
     </code>
 </pre>
 
-- `DELETE Delete Text By Id: https://gpt-api-delta.vercel.app/delete-text/:text_id`
+<br/>
+<br/>
+
+- ✅ `DELETE Delete Text By Id: https://gpt-api-delta.vercel.app/delete-text/:text_id`
 This request deletes a text from the account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -218,7 +266,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Path params:
 <pre>
     <code>
@@ -228,8 +276,12 @@ Path params:
     </code>
 </pre>
 
-- `DELETE Delete Translation By Id: https://gpt-api-delta.vercel.app/delete-translation/:translation_id`
+<br/>
+<br/>
+
+- ✅ `DELETE Delete Translation By Id: https://gpt-api-delta.vercel.app/delete-translation/:translation_id`
 This request deletes a translation from the account.
+<br/>
 Headers:
 <pre>
     <code>
@@ -238,7 +290,7 @@ Headers:
         }
     </code>
 </pre>
-
+<br/>
 Path params:
 <pre>
     <code>
