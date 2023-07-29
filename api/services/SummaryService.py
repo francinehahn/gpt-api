@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 from api.schema.SummarySchema import SummarySchema
 from api.errors.SummaryErrors import SummaryNotFound
 from api.errors.SummaryErrors import NoSummariesToUpdate
+from api.utils.current_datetime import current_time
 
 class SummaryService:
     """This class receives data from the controller and returns the response from the open ai api"""
@@ -20,9 +21,10 @@ class SummaryService:
             SummarySchema().load(data)
             user_id = self.authentication.get_identity()
             summary_id = str(uuid.uuid4())
+            created_at = current_time()
 
             response = self.open_ai.generate_summary(data['text'])
-            self.summary_database.create_summary(summary_id, data['text'], response, user_id)
+            self.summary_database.create_summary(summary_id, data['text'], response, user_id, created_at)
             return response
         
         except ValidationError as err:
@@ -42,7 +44,8 @@ class SummaryService:
                     "id": summary[0],
                     "question": summary[1],
                     "answer": summary[2],
-                    "user_id": summary[3]
+                    "user_id": summary[3],
+                    "created_at": summary[4]
                 })
             return response
         

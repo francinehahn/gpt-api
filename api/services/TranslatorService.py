@@ -6,6 +6,7 @@ from api.schema.TranslatorSchema import TranslatorSchema
 from api.schema.RegenerateTranslationSchema import RegenerateTranslationSchema
 from api.errors.TranslatorErrors import TranslationNotFound
 from api.errors.TranslatorErrors import NoTranslationsToUpdate
+from api.utils.current_datetime import current_time
 
 class TranslatorService:
     """This class receives data from the controller and returns the response from the open ai api"""
@@ -21,9 +22,10 @@ class TranslatorService:
             TranslatorSchema().load(data)
             user_id = self.authentication.get_identity()
             translator_id = str(uuid.uuid4())
+            created_at = current_time()
 
             response = self.open_ai.generate_translation(data)
-            self.translator_database.create_translation(translator_id, data['text'], response, user_id)
+            self.translator_database.create_translation(translator_id, data['text'], response, user_id, created_at)
             return response
         
         except ValidationError as err:
@@ -43,7 +45,8 @@ class TranslatorService:
                     "id": translation[0],
                     "question": translation[1],
                     "answer": translation[2],
-                    "user_id": translation[3]
+                    "user_id": translation[3],
+                    "created_at": translation[4]
                 })
             
             return response

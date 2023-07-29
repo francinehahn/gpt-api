@@ -6,13 +6,13 @@ class RecipeDatabase:
     """This class receives data from the service layer and inserts the answer from the openAI api into the database"""
     TABLE_NAME = "recipes_gpt"
 
-    def create_recipe(self, recipe_id, ingredients, answer, user_id):
+    def create_recipe(self, recipe_id, ingredients, answer, user_id, created_at):
         """This method receives the recipe from the service layer and inserts it into the database"""
         try:
             connection = connect(**config)
             cursor = connection.cursor()
-            query = f"INSERT INTO {self.TABLE_NAME} (id, question, answer, user_id) VALUES (%s, %s, %s, %s)"
-            values = (recipe_id, ingredients, answer, user_id)
+            query = f"INSERT INTO {self.TABLE_NAME} (id, question, answer, user_id, created_at) VALUES (%s, %s, %s, %s, %s)"
+            values = (recipe_id, ingredients, answer, user_id, created_at)
             cursor.execute(query, values)
             connection.commit()
         except Error as err:
@@ -26,7 +26,7 @@ class RecipeDatabase:
         try:
             connection = connect(**config)
             cursor = connection.cursor()
-            query = f"SELECT * FROM {self.TABLE_NAME} WHERE user_id = (%s)"
+            query = f"SELECT * FROM {self.TABLE_NAME} WHERE user_id = (%s) ORDER BY created_at ASC"
             cursor.execute(query, (user_id,))
             recipes = cursor.fetchall()
             return recipes

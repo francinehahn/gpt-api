@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 from api.schema.RecipeSchema import RecipeSchema
 from api.errors.RecipeErrors import RecipeNotFound
 from api.errors.RecipeErrors import NoRecipesToUpdate
+from api.utils.current_datetime import current_time
 
 class RecipeService:
     """This class receives data from the controller and returns the response from the open ai api"""
@@ -20,9 +21,10 @@ class RecipeService:
             RecipeSchema().load(data)
             user_id = self.authentication.get_identity()
             recipe_id = str(uuid.uuid4())
-
+            created_at = current_time()
+            
             response = self.open_ai.generate_recipe(data['ingredients'])
-            self.recipe_database.create_recipe(recipe_id, data['ingredients'], response, user_id)
+            self.recipe_database.create_recipe(recipe_id, data['ingredients'], response, user_id, created_at)
             return response
         
         except ValidationError as err:
@@ -42,7 +44,8 @@ class RecipeService:
                     "id": recipe[0],
                     "question": recipe[1],
                     "answer": recipe[2],
-                    "user_id": recipe[3]
+                    "user_id": recipe[3],
+                    "created_at": recipe[4]
                 })
             
             return response
