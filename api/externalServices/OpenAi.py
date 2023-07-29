@@ -46,4 +46,17 @@ class OpenAI:
             stop=None
         )
         return response['choices'][0]['text']
+    
+    @staticmethod
+    def generate_translation(question):
+        """This method returns a translation"""
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Traduza o seguinte texto do {question['source_language']} para o {question['target_language']}: {question['text']}",
+            temperature=0.8,
+            max_tokens=2048,
+            n=1,
+            stop=None
+        )
+        return response['choices'][0]['text']
   

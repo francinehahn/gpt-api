@@ -3,6 +3,7 @@ from marshmallow import ValidationError
 from mysql.connector import Error
 from flask import jsonify, request
 from api.errors.TranslatorErrors import TranslationNotFound
+from api.errors.TranslatorErrors import NoTranslationsToUpdate
 
 class TranslatorController:
     """This class receives data from the HTTP request and returns the response"""
@@ -29,7 +30,6 @@ class TranslatorController:
             )
             response.status_code = 422
             return response
-    
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -74,6 +74,35 @@ class TranslatorController:
             response.status_code = 404
             return response
         
+        except Error as err:
+            response = jsonify(
+                error = f"Unexpected error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
+    def regenerate_translation(self):
+        """This method receives a token and returns a message in case of success"""
+        try:
+            data = request.json
+            response = self.translator_service.regenerate_translation(data)
+            response = jsonify(
+                message = "The translation has been updated successfully."
+            )
+            response.status_code = 200
+            return response
+        except ValidationError as err:
+            response = jsonify(
+                error = f"Validation error: {err}"
+            )
+            response.status_code = 422
+            return response
+        except NoTranslationsToUpdate as err:
+            response = jsonify(
+                error = str(err)
+            )
+            response.status_code = 422
+            return response
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
