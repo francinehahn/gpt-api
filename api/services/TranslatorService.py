@@ -10,7 +10,6 @@ from api.utils.current_datetime import current_time
 
 class TranslatorService:
     """This class receives data from the controller and returns the response from the open ai api"""
-
     def __init__(self, translator_database, authentication, open_ai):
         self.translator_database = translator_database
         self.authentication = authentication
@@ -27,7 +26,6 @@ class TranslatorService:
             response = self.open_ai.generate_translation(data)
             self.translator_database.create_translation(translator_id, data['text'], response, user_id, created_at)
             return response
-        
         except ValidationError as err:
             raise err
         except Error as err:
@@ -48,9 +46,7 @@ class TranslatorService:
                     "user_id": translation[3],
                     "created_at": translation[4]
                 })
-            
             return response
-        
         except Error as err:
             raise err
         
@@ -63,7 +59,6 @@ class TranslatorService:
                 raise TranslationNotFound("Translation not found.")
 
             self.translator_database.delete_translation_by_id(user_id, translation_id)
-        
         except TranslationNotFound as err:
             raise err
         except Error as err:
@@ -89,11 +84,11 @@ class TranslatorService:
             }
 
             response = self.open_ai.generate_translation(formatted_translation)
-            self.translator_database.regenerate_translation(response, user_id, translation_id)
-            
+            self.translator_database.regenerate_translation(response, user_id, translation_id)  
         except ValidationError as err:
             raise err
         except NoTranslationsToUpdate as err:
             raise err
         except Error as err:
             raise err
+        

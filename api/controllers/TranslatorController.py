@@ -7,7 +7,6 @@ from api.errors.TranslatorErrors import NoTranslationsToUpdate
 
 class TranslatorController:
     """This class receives data from the HTTP request and returns the response"""
-
     def __init__(self, translator_service):
         self.translator_service = translator_service
          
@@ -16,14 +15,12 @@ class TranslatorController:
         try:
             data = request.json
             response = self.translator_service.create_translation(data)
-
             response = jsonify(
                 message = "The translation has been registered successfully",
                 data = response
             )
             response.status_code = 201
             return response
-    
         except ValidationError as err:
             response = jsonify(
                 error = f"Validation error: {err}"
@@ -41,14 +38,11 @@ class TranslatorController:
         """This method receives a token and returns all the translations registered in the user account"""
         try:
             response = self.translator_service.get_translations()
-            
             response = jsonify(
                 translations = response
             )
-            
             response.status_code = 200
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -63,17 +57,14 @@ class TranslatorController:
             response = jsonify(
                 message = "The translation has been deleted successfully."
             )
-            
             response.status_code = 200
             return response
-        
         except TranslationNotFound as err:
             response = jsonify(
                 error = str(err)
             )
             response.status_code = 404
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -109,3 +100,4 @@ class TranslatorController:
             )
             response.status_code = 400
             return response
+        

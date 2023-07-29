@@ -9,7 +9,6 @@ from api.utils.current_datetime import current_time
 
 class TextService:
     """This class receives data from the controller and returns the response from the open ai api"""
-
     def __init__(self, text_database, authentication, open_ai):
         self.text_database = text_database
         self.authentication = authentication
@@ -26,7 +25,6 @@ class TextService:
             response = self.open_ai.generate_text(data['text'])
             self.text_database.create_text(writing_assistant_id, data['text'], response, user_id, created_at)
             return response
-        
         except ValidationError as err:
             raise err
         except Error as err:
@@ -48,7 +46,6 @@ class TextService:
                     "created_at": text[4]
                 })
             return response
-        
         except Error as err:
             raise err
         
@@ -61,7 +58,6 @@ class TextService:
                 raise TextNotFound("Text not found.")
 
             self.text_database.delete_text_by_id(user_id, text_id)
-        
         except TextNotFound as err:
             raise err
         except Error as err:
@@ -81,8 +77,8 @@ class TextService:
 
             response = self.open_ai.generate_text(question)
             self.text_database.regenerate_text(response, user_id, text_id)
-            
         except NoTextsToUpdate as err:
             raise err
         except Error as err:
             raise err
+        

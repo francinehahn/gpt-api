@@ -14,14 +14,11 @@ class UserDatabase:
             values = (user_id, data['user_name'], data['email'], data['phone'], data['password'])
             cursor.execute(query, values)
             connection.commit()
-
         except IntegrityError as err:
             if err.errno == 1062:
                 raise EmailAlreadyInUse('This email is already in use.') from err
-            
         except Error as err:
             raise err
-        
         finally:
             cursor.close()
             connection.close()
@@ -37,7 +34,7 @@ class UserDatabase:
             return user
         except Error as err:
             raise err
-        
         finally:
             cursor.close()
             connection.close()
+            

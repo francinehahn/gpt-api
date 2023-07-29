@@ -81,3 +81,4 @@ class TextDatabase:
         finally:
             cursor.close()
             connection.close()
+            

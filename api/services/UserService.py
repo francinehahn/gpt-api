@@ -25,7 +25,6 @@ class UserService:
             data['password'] = hashed_password
 
             self.user_database.create_user(user_id, data)
-        
         except EmailAlreadyInUse as err:
             raise err
         except ValidationError as err:
@@ -47,7 +46,6 @@ class UserService:
 
             token = self.authentication.generate_token(user[0])
             return token
-        
         except EmailAlreadyInUse as err:
             raise err
         except IncorrectLoginInfo as err:
@@ -56,3 +54,4 @@ class UserService:
             raise err
         except Error as err:
             raise err
+        

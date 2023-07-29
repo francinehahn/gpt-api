@@ -81,3 +81,4 @@ class TranslatorDatabase:
         finally:
             cursor.close()
             connection.close()
+            

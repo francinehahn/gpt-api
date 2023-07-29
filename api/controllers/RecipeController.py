@@ -7,7 +7,6 @@ from api.errors.RecipeErrors import NoRecipesToUpdate
 
 class RecipeController:
     """This class receives data from the HTTP request and returns the response"""
-
     def __init__(self, recipe_service):
         self.recipe_service = recipe_service
 
@@ -16,22 +15,18 @@ class RecipeController:
         try:
             data = request.json
             response = self.recipe_service.create_recipe(data)
-            
             response = jsonify(
                 message = "The recipe has been registered successfully",
                 data = response
             )
-            
             response.status_code = 201
             return response
-        
         except ValidationError as err:
             response = jsonify(
                 error = f"Validation error: {err}"
             )
             response.status_code = 422
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -43,14 +38,11 @@ class RecipeController:
         """This method receives a token and returns the recipes registered in the user account"""
         try:
             response = self.recipe_service.get_recipes()
-            
             response = jsonify(
                 recipes = response
             )
-            
             response.status_code = 200
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -65,7 +57,6 @@ class RecipeController:
             response = jsonify(
                 message = "The recipe has been deleted successfully."
             )
-            
             response.status_code = 200
             return response
         
@@ -75,7 +66,6 @@ class RecipeController:
             )
             response.status_code = 404
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -90,20 +80,18 @@ class RecipeController:
             response = jsonify(
                 message = "The recipe has been updated successfully."
             )
-            
             response.status_code = 200
             return response
-
         except NoRecipesToUpdate as err:
             response = jsonify(
                 error = str(err)
             )
             response.status_code = 422
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
             response.status_code = 400
             return response
+        
