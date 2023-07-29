@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 from api.schema.WritingAssistantSchema import WritingAssistantSchema
 from api.errors.TextErrors import TextNotFound
 from api.errors.TextErrors import NoTextsToUpdate
+from api.utils.current_datetime import current_time
 
 class TextService:
     """This class receives data from the controller and returns the response from the open ai api"""
@@ -20,9 +21,10 @@ class TextService:
             WritingAssistantSchema().load(data)
             user_id = self.authentication.get_identity()
             writing_assistant_id = str(uuid.uuid4())
+            created_at = current_time()
 
             response = self.open_ai.generate_text(data['text'])
-            self.text_database.create_text(writing_assistant_id, data['text'], response, user_id)
+            self.text_database.create_text(writing_assistant_id, data['text'], response, user_id, created_at)
             return response
         
         except ValidationError as err:
@@ -42,7 +44,8 @@ class TextService:
                     "id": text[0],
                     "question": text[1],
                     "answer": text[2],
-                    "user_id": text[3]
+                    "user_id": text[3],
+                    "created_at": text[4]
                 })
             return response
         
