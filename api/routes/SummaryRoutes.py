@@ -5,11 +5,12 @@ from api.controllers.SummaryController import SummaryController
 from api.services.SummaryService import SummaryService
 from api.database.SummaryDatabase import SummaryDatabase
 from api.externalServices.Authentication import Authentication
+from api.externalServices.OpenAi import OpenAI
 
 summary_blueprint = Blueprint('summary', __name__)
 
 summary_database = SummaryDatabase()
-summary_service = SummaryService(summary_database, Authentication)
+summary_service = SummaryService(summary_database, Authentication, OpenAI)
 summary_controller = SummaryController(summary_service)
 
 @summary_blueprint.route("/create-summary", methods=["POST"])
@@ -29,3 +30,9 @@ def get_summaries():
 def delete_summary_by_id(summary_id):
     """Endpoint that receives a token and a summary_id and deletes the summary"""
     return summary_controller.delete_summary_by_id(summary_id)
+
+@summary_blueprint.route("/regenerate-summary", methods=["PATCH"])
+@jwt_required()
+def regenerate_summary():
+    """Endpoint that receives a token and updates the summary"""
+    return summary_controller.regenerate_summary()
