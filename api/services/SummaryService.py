@@ -1,43 +1,29 @@
 """Summary service"""
-import os
 import uuid
 from mysql.connector import Error
-import openai
-from dotenv import load_dotenv
 from marshmallow import ValidationError
 from api.schema.SummarySchema import SummarySchema
 from api.errors.SummaryErrors import SummaryNotFound
-
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+from api.errors.SummaryErrors import NoSummariesToUpdate
 
 class SummaryService:
     """This class receives data from the controller and returns the response from the open ai api"""
 
-    def __init__(self, summary_database, authentication):
+    def __init__(self, summary_database, authentication, open_ai):
         self.summary_database = summary_database
         self.authentication = authentication
+        self.open_ai = open_ai
     
     def create_summary(self, data):
         """This method receives a text and returns a summary of it"""
         try:
             SummarySchema().load(data)
-            
             user_id = self.authentication.get_identity()
             summary_id = str(uuid.uuid4())
 
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=f"Resuma o seguinte texto: {data['text']}",
-                temperature=0.8,
-                max_tokens=2048,
-                n=1,
-                stop=None
-            )
-
-            self.summary_database.create_summary(summary_id, data['text'], response['choices'][0]['text'], user_id)
-            
-            return response['choices'][0]['text']
+            response = self.open_ai.generate_summary(data['text'])
+            self.summary_database.create_summary(summary_id, data['text'], response, user_id)
+            return response
         
         except ValidationError as err:
             raise err
@@ -58,7 +44,6 @@ class SummaryService:
                     "answer": summary[2],
                     "user_id": summary[3]
                 })
-            
             return response
         
         except Error as err:
@@ -69,13 +54,32 @@ class SummaryService:
         try:
             user_id = self.authentication.get_identity()
             summary = self.summary_database.get_summary_by_id(user_id, summary_id)
-        
             if summary is None:
                 raise SummaryNotFound("Summary not found.")
 
             self.summary_database.delete_summary_by_id(user_id, summary_id)
         
         except SummaryNotFound as err:
+            raise err
+        except Error as err:
+            raise err
+        
+    def regenerate_summary(self):
+        """This method receives a a token and sends the info to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            all_summaries = self.summary_database.get_summaries(user_id)
+            if len(all_summaries) == 0:
+                raise NoSummariesToUpdate("There are no summaries registered in the database.")
+
+            last_summary = all_summaries[-1]
+            summary_id = last_summary[0]
+            question = last_summary[1]
+
+            response = self.open_ai.generate_summary(question)
+            self.summary_database.regenerate_summary(response, user_id, summary_id)
+            
+        except NoSummariesToUpdate as err:
             raise err
         except Error as err:
             raise err

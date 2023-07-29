@@ -36,4 +36,3 @@ def delete_recipe_by_id(recipe_id):
 def regenerate_recipe():
     """Endpoint that receives a token and updates the recipe"""
     return recipe_controller.regenerate_recipe()
-

@@ -79,7 +79,6 @@ class RecipeService:
             question = last_recipe[1] #ingredients
 
             response = self.open_ai.generate_recipe(question)
-            print("RESPONSE: ", response)
             self.recipe_database.regenerate_recipe(response, user_id, recipe_id)
         
         except NoRecipesToUpdate as err:
