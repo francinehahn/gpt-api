@@ -22,7 +22,7 @@ class RecipeService:
             user_id = self.authentication.get_identity()
             recipe_id = str(uuid.uuid4())
             created_at = current_time()
-            
+
             response = self.open_ai.generate_recipe(data['ingredients'])
             self.recipe_database.create_recipe(recipe_id, data['ingredients'], response, user_id, created_at)
             return response

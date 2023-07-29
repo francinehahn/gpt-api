@@ -1,7 +1,7 @@
 """User database"""
 from mysql.connector import connect, IntegrityError, Error
 from api.connectionDb.ConnectionDb import config
-from api.errors.UserErrors import EmailAlreadyInUse, IncorrectLoginInfo
+from api.errors.UserErrors import EmailAlreadyInUse
 
 class UserDatabase:
     """Database layer"""

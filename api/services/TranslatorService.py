@@ -59,7 +59,6 @@ class TranslatorService:
         try:
             user_id = self.authentication.get_identity()
             translation = self.translator_database.get_translation_by_id(user_id, translation_id)
-            print(translation)
             if translation is None:
                 raise TranslationNotFound("Translation not found.")
 
