@@ -1,43 +1,29 @@
 """Recipe service"""
-import os
 import uuid
 from mysql.connector import Error
-import openai
-from dotenv import load_dotenv
 from marshmallow import ValidationError
 from api.schema.RecipeSchema import RecipeSchema
 from api.errors.RecipeErrors import RecipeNotFound
-
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+from api.errors.RecipeErrors import NoRecipesToUpdate
 
 class RecipeService:
     """This class receives data from the controller and returns the response from the open ai api"""
 
-    def __init__(self, recipe_database, authentication):
+    def __init__(self, recipe_database, authentication, open_ai):
         self.recipe_database = recipe_database
         self.authentication = authentication
+        self.open_ai = open_ai
 
     def create_recipe(self, data):
         """This method receives ingredients and returns a recipe"""
         try:
             RecipeSchema().load(data)
-
             user_id = self.authentication.get_identity()
             recipe_id = str(uuid.uuid4())
 
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=f"Crie uma receita com os seguintes ingredientes: {data['ingredients']}",
-                temperature=0.8,
-                max_tokens=2048,
-                n=1,
-                stop=None
-            )
-            
-            self.recipe_database.create_recipe(recipe_id, data['ingredients'], response['choices'][0]['text'], user_id)
-
-            return response['choices'][0]['text']
+            response = self.open_ai.generate_recipe(data['ingredients'])
+            self.recipe_database.create_recipe(recipe_id, data['ingredients'], response, user_id)
+            return response
         
         except ValidationError as err:
             raise err
@@ -76,6 +62,27 @@ class RecipeService:
             self.recipe_database.delete_recipe_by_id(user_id, recipe_id)
         
         except RecipeNotFound as err:
+            raise err
+        except Error as err:
+            raise err
+        
+    def regenerate_recipe(self):
+        """This method receives a a token and sends the info to the database layer"""
+        try:
+            user_id = self.authentication.get_identity()
+            all_recipes = self.recipe_database.get_recipes(user_id)
+            if len(all_recipes) == 0:
+                raise NoRecipesToUpdate("There are no recipes registered in the database.")
+
+            last_recipe = all_recipes[-1]
+            recipe_id = last_recipe[0]
+            question = last_recipe[1] #ingredients
+
+            response = self.open_ai.generate_recipe(question)
+            print("RESPONSE: ", response)
+            self.recipe_database.regenerate_recipe(response, user_id, recipe_id)
+        
+        except NoRecipesToUpdate as err:
             raise err
         except Error as err:
             raise err

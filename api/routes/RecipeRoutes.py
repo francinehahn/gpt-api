@@ -5,11 +5,12 @@ from api.controllers.RecipeController import RecipeController
 from api.services.RecipeService import RecipeService
 from api.database.RecipeDatabase import RecipeDatabase
 from api.externalServices.Authentication import Authentication
+from api.externalServices.OpenAi import OpenAI
 
 recipe_blueprint = Blueprint('recipe', __name__)
 
 recipe_database = RecipeDatabase()
-recipe_service = RecipeService(recipe_database, Authentication)
+recipe_service = RecipeService(recipe_database, Authentication, OpenAI)
 recipe_controller = RecipeController(recipe_service)
 
 @recipe_blueprint.route("/create-recipe", methods=["POST"])
@@ -29,3 +30,10 @@ def get_recipes():
 def delete_recipe_by_id(recipe_id):
     """Endpoint that receives a token and a recipe_id and deletes the recipe"""
     return recipe_controller.delete_recipe_by_id(recipe_id)
+
+@recipe_blueprint.route("/regenerate-recipe", methods=["PATCH"])
+@jwt_required()
+def regenerate_recipe():
+    """Endpoint that receives a token and updates the recipe"""
+    return recipe_controller.regenerate_recipe()
+

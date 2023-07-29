@@ -69,3 +69,19 @@ class RecipeDatabase:
         finally:
             cursor.close()
             connection.close()
+
+    def regenerate_recipe(self, answer, user_id, recipe_id):
+        """This method receives a user_id and a recipe_id and updates the recipe (answer)"""
+        try:
+            connection = connect(**config)
+            cursor = connection.cursor()
+            query = "UPDATE recipes_gpt SET answer = (%s) WHERE user_id = (%s) AND id = (%s)"
+            values = (answer, user_id, recipe_id)
+            cursor.execute(query, values)
+            connection.commit()
+
+        except Error as err:
+            raise err
+        finally:
+            cursor.close()
+            connection.close()
