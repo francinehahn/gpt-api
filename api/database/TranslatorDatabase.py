@@ -11,7 +11,7 @@ class TranslatorDatabase:
         try:
             connection = connect(**config)
             cursor = connection.cursor()
-            query = f"INSERT INTO {self.TABLE_NAME} (id, question, answer, user_id) VALUES (%s, %s, %s, %s, %s)"
+            query = f"INSERT INTO {self.TABLE_NAME} (id, question, answer, user_id, created_at) VALUES (%s, %s, %s, %s, %s)"
             values = (translator_id, text, answer, user_id, created_at)
             cursor.execute(query, values)
             connection.commit()
