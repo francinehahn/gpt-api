@@ -207,6 +207,76 @@ Headers:
 <br/>
 <br/>
 
+- ✅ `PATCH Regenerate Recipe: https://gpt-api-delta.vercel.app/regenerate-recipe`
+This request regenerates the last recipe created and updates the recipe in the database
+<br/>
+Headers:
+<pre>
+    <code>
+        {
+            "Authorization": Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDU2Njc3NywianRpIjoiNDQ2ZTIzNWYtZTJiOS00OWI3LTllNzctMTA2ZGNhOGZjNzdhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjhhODU1NzNiLTJlYTItNDNhNC05YzhkLTkxYjk1OWU2ZGEzYyIsIm5iZiI6MTY5MDU2Njc3NywiZXhwIjoxNjkwNjUzMTc3fQ.F91Kouw9VHZRVga4iHTJcUSbtEAd_oVgcI4Ycgilr-o
+        }
+    </code>
+</pre>
+
+<br/>
+<br/>
+
+- ✅ `PATCH Regenerate Summary: https://gpt-api-delta.vercel.app/regenerate-summary`
+This request regenerates the last summary created and updates the summary in the database
+<br/>
+Headers:
+<pre>
+    <code>
+        {
+            "Authorization": Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDU2Njc3NywianRpIjoiNDQ2ZTIzNWYtZTJiOS00OWI3LTllNzctMTA2ZGNhOGZjNzdhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjhhODU1NzNiLTJlYTItNDNhNC05YzhkLTkxYjk1OWU2ZGEzYyIsIm5iZiI6MTY5MDU2Njc3NywiZXhwIjoxNjkwNjUzMTc3fQ.F91Kouw9VHZRVga4iHTJcUSbtEAd_oVgcI4Ycgilr-o
+        }
+    </code>
+</pre>
+
+<br/>
+<br/>
+
+- ✅ `PATCH Regenerate Text: https://gpt-api-delta.vercel.app/regenerate-text`
+This request regenerates the last text created and updates it in the database
+<br/>
+Headers:
+<pre>
+    <code>
+        {
+            "Authorization": Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDU2Njc3NywianRpIjoiNDQ2ZTIzNWYtZTJiOS00OWI3LTllNzctMTA2ZGNhOGZjNzdhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjhhODU1NzNiLTJlYTItNDNhNC05YzhkLTkxYjk1OWU2ZGEzYyIsIm5iZiI6MTY5MDU2Njc3NywiZXhwIjoxNjkwNjUzMTc3fQ.F91Kouw9VHZRVga4iHTJcUSbtEAd_oVgcI4Ycgilr-o
+        }
+    </code>
+</pre>
+
+<br/>
+<br/>
+
+- ✅ `PATCH Regenerate Translation: https://gpt-api-delta.vercel.app/regenerate-translation`
+This request regenerates the last translation created and updates it in the database
+<br/>
+Headers:
+<pre>
+    <code>
+        {
+            "Authorization": Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5MDU2Njc3NywianRpIjoiNDQ2ZTIzNWYtZTJiOS00OWI3LTllNzctMTA2ZGNhOGZjNzdhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjhhODU1NzNiLTJlYTItNDNhNC05YzhkLTkxYjk1OWU2ZGEzYyIsIm5iZiI6MTY5MDU2Njc3NywiZXhwIjoxNjkwNjUzMTc3fQ.F91Kouw9VHZRVga4iHTJcUSbtEAd_oVgcI4Ycgilr-o
+        }
+    </code>
+</pre>
+<br/>
+Body:
+<pre>
+    <code>
+        {
+            "source_language": "português",
+            "target_language": "espanhol"
+        }
+    </code>
+</pre>
+
+<br/>
+<br/>
+
 - ✅ `DELETE Delete Recipe By Id: https://gpt-api-delta.vercel.app/delete-recipe/:recipe_id`
 This request deletes a recipe from the account.
 <br/>
