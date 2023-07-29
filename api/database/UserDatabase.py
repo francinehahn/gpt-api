@@ -34,12 +34,7 @@ class UserDatabase:
             query = "SELECT * FROM users_gpt WHERE email = %s"
             cursor.execute(query, (email,))
             user = cursor.fetchone()
-            
-            if user:
-                return user
-            else:
-                raise IncorrectLoginInfo("Email or password are incorrect.")
-
+            return user
         except Error as err:
             raise err
         

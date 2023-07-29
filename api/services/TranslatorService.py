@@ -57,11 +57,9 @@ class TranslatorService:
     def delete_translation_by_id(self, translation_id):
         """This method receives a translation_id and a token and sends the info to the database layer"""
         try:
-            print("cheguei aquiiiii")
             user_id = self.authentication.get_identity()
-            print("cheguei aquiiiii 2222222")
             translation = self.translator_database.get_translation_by_id(user_id, translation_id)
-            print("cheguei aquiiiii 3333333")
+            print(translation)
             if translation is None:
                 raise TranslationNotFound("Translation not found.")
 

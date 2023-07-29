@@ -57,7 +57,6 @@ class TextService:
         try:
             user_id = self.authentication.get_identity()
             text = self.text_database.get_text_by_id(user_id, text_id)
-        
             if text is None:
                 raise TextNotFound("Text not found.")
 

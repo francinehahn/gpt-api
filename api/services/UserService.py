@@ -38,6 +38,8 @@ class UserService:
         try:
             LoginSchema().load(data)
             user = self.user_database.get_user_by_email(data["email"])
+            if user is None:
+                raise IncorrectLoginInfo("Email or password are incorrect.")
 
             is_password_correct = self.criptography.verify_password(data["password"], user[4])
             if (is_password_correct is False):

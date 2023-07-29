@@ -58,7 +58,6 @@ class RecipeService:
         try:
             user_id = self.authentication.get_identity()
             recipe = self.recipe_database.get_recipe_by_id(user_id, recipe_id)
-        
             if recipe is None:
                 raise RecipeNotFound("Recipe not found.")
 
