@@ -5,11 +5,12 @@ from api.controllers.TextController import TextController
 from api.services.TextService import TextService
 from api.database.TextDatabase import TextDatabase
 from api.externalServices.Authentication import Authentication
+from api.externalServices.OpenAi import OpenAI
 
 text_blueprint = Blueprint('text', __name__)
 
 text_database = TextDatabase()
-text_service = TextService(text_database, Authentication)
+text_service = TextService(text_database, Authentication, OpenAI)
 text_controller = TextController(text_service)
 
 @text_blueprint.route("/create-text", methods=["POST"])
@@ -29,3 +30,9 @@ def get_texts():
 def delete_text_by_id(text_id):
     """Endpoint that receives a token and a text_id and deletes the text"""
     return text_controller.delete_text_by_id(text_id)
+
+@text_blueprint.route("/regenerate-text", methods=["PATCH"])
+@jwt_required()
+def regenerate_text():
+    """Endpoint that receives a token and updates the text"""
+    return text_controller.regenerate_text()

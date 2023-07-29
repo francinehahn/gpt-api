@@ -33,3 +33,17 @@ class OpenAI:
             stop=None
         )
         return response['choices'][0]['text']
+    
+    @staticmethod
+    def generate_text(question):
+        """This method returns a text"""
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Crie um texto para: {question}",
+            temperature=0.8,
+            max_tokens=2048,
+            n=1,
+            stop=None
+        )
+        return response['choices'][0]['text']
+  

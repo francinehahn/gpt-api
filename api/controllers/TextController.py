@@ -3,6 +3,7 @@ from marshmallow import ValidationError
 from mysql.connector import Error
 from flask import jsonify, request
 from api.errors.TextErrors import TextNotFound
+from api.errors.TextErrors import NoTextsToUpdate
 
 class TextController:
     """This class receives data from the HTTP request and returns the response"""
@@ -74,6 +75,28 @@ class TextController:
             response.status_code = 404
             return response
         
+        except Error as err:
+            response = jsonify(
+                error = f"Unexpected error: {err}"
+            )
+            response.status_code = 400
+            return response
+        
+    def regenerate_text(self):
+        """This method receives a token and returns a message in case of success"""
+        try:
+            response = self.text_service.regenerate_text()
+            response = jsonify(
+                message = "The text has been updated successfully."
+            )
+            response.status_code = 200
+            return response
+        except NoTextsToUpdate as err:
+            response = jsonify(
+                error = str(err)
+            )
+            response.status_code = 422
+            return response
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
