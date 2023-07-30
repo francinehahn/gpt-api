@@ -81,4 +81,3 @@ class RecipeDatabase:
         finally:
             cursor.close()
             connection.close()
-            

@@ -6,6 +6,7 @@ This is an API REST that consumes data from the OpenAI API.
 ## 👩‍💻 Technologies used
 - Python
 - Flask
+- PyTest
 - OpenAI API
 - Bcrypt
 - JWT
