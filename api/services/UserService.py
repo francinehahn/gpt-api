@@ -25,7 +25,6 @@ class UserService:
             data['password'] = hashed_password
 
             self.user_database.create_user(user_id, data)
-        
         except EmailAlreadyInUse as err:
             raise err
         except ValidationError as err:
@@ -38,6 +37,8 @@ class UserService:
         try:
             LoginSchema().load(data)
             user = self.user_database.get_user_by_email(data["email"])
+            if user is None:
+                raise IncorrectLoginInfo("Email or password are incorrect.")
 
             is_password_correct = self.criptography.verify_password(data["password"], user[4])
             if (is_password_correct is False):
@@ -45,7 +46,6 @@ class UserService:
 
             token = self.authentication.generate_token(user[0])
             return token
-        
         except EmailAlreadyInUse as err:
             raise err
         except IncorrectLoginInfo as err:
@@ -54,3 +54,4 @@ class UserService:
             raise err
         except Error as err:
             raise err
+        

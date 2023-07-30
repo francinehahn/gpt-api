@@ -1,0 +1,22 @@
+"""OpenAIMock"""
+
+class OpenAIMock:
+    """This class is a mock of the openAI class"""
+    @staticmethod
+    def generate_recipe(question):
+        """This method returns a recipe"""
+        return "\n\nArroz Doce Cremoso\n\nIngredientes: \n\n- 2 xícaras de arroz branco\n- 1/2 xícara de açúcar\n- 1/4 xícara de leite condensado\n- 1/2 xícara de leite\n- 1 1/2 xícaras de creme de leite\n- Canela a gosto\n- 1/2 colher de chá de essência de baunilha\n\nModo de Preparo:\n\n1. Coloque o arroz em uma panela com água quente e deixe cozinhar por 20 minutos ou até ficar macio.\n\n2. Escorra a água e coloque o arroz em uma tigela.\n\n3. Acrescente o açúcar, o leite condensado, o leite, o creme de leite, a canela e a essência de baunilha.\n\n4. Misture bem até que todos os ingredientes sejam bem incorporados.\n\n5. Coloque a mistura em uma panela e leve ao fogo médio.\n\n6. Cozinhe por 15 minutos, mexendo de vez em quando para não grudar no fundo da panela.\n\n7. Desligue o fogo e sirva em seguida."
+    
+    @staticmethod
+    def generate_summary(question):
+        return "\n\nApós a independência dos EUA, o Congresso Continental aprovou o dólar como moeda nacional. A hegemonia atual da moeda norte-americana só se deu após a Segunda Guerra Mundial, quando a libra esterlina tinha status de moeda internacional. No entanto, até a metade do século XIX, os Estados Unidos não haviam legislado sobre o controle da emissão de moedas. Isso levou a uma situação caótica, em que qualquer indivíduo podia emitir cédulas sem autorização. A primeira tentativa de unificação dos pagamentos partiu da necessidade de financiamento da Guerra de Secessão, em 1861. O governo passou a emitir notas que poderiam ser convertidas em ouro e a moeda foi unificada em 1863 com o National Banking Act."
+    
+    @staticmethod
+    def generate_text(question):
+        """This method returns a text"""
+        return "\n\nA linhaça é conhecida por ser uma excelente fonte de diversos nutrientes e benefícios para a saúde. Ela é rica em ômega 3, fibras e ferro, fornecendo muitos benefícios para o coração, a saúde digestiva, a saúde da pele e muito mais.\n\nA linhaça é uma grande fonte de ácidos graxos ômega 3, que ajudam a reduzir a inflamação, melhorar o funcionamento do sistema imunológico, reduzir a pressão arterial e ajudar a reduzir o colesterol.\n\nA linhaça também é rica em fibras solúveis, que ajudam a absorver água, aumentam a sensação de saciedade e ajudam a regular o funcionamento do intestino, o que é útil no tratamento e prevenção de diarréia e constipação.\n\nAlém disso, a linhaça também é uma boa fonte de ferro, o que ajuda a reduzir o risco de anemia. O ferro é essencial para a produção de glóbulos vermelhos saudáveis e para o transporte de oxigênio no corpo.\n\nA linhaça também tem antioxidantes, que ajudam a combater os radicais livres que são prejudiciais à saúde e ajudam na prevenção de doenças crônicas. Além disso, os antioxidantes também ajudam na prevenção do envelhecimento precoce.\n\nPortanto, a linhaça é uma excelente fonte de nutrientes e benefícios para a saúde. Comer linhaça regularmente pode ajudar a melhorar a saúde geral, prevenir doenças e melhorar a qualidade de vida."
+    
+    @staticmethod
+    def generate_translation(question):
+        """This method returns a translation"""
+        return "\n\nDogs are loved by many people around the world. There are many different breeds, but some stand out for being the most popular. Among the best known breeds are German Shepherd, Labrador Retriever, Golden Retriever, Bulldog, Beagle, Yorkshire Terrier, Boxer, Cocker Spaniel, Chihuahua and Poodle. The German Shepherd is known for its guard and work abilities, is loyal and very intelligent. The Labrador Retriever is considered the most popular pet dog in the world. The Golden Retriever is known for its friendly personality and unconditional love. The Bulldog is loyal, brave and very friendly. The Beagle is cheerful, playful and active. The Yorkshire Terrier is small, intelligent and very brave. The Boxer is strong, brave and affectionate. The Cocker Spaniel is friendly, affectionate and very active. The Chihuahua is a very intelligent and brave pet dog. The Poodle is elegant, intelligent and friendly. These popular dog breeds are known for being great companions and loyal to their owners. If you are thinking of adopting a dog, these breeds are excellent options."

@@ -81,3 +81,4 @@ class SummaryDatabase:
         finally:
             cursor.close()
             connection.close()
+            

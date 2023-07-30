@@ -22,11 +22,9 @@ class RecipeService:
             user_id = self.authentication.get_identity()
             recipe_id = str(uuid.uuid4())
             created_at = current_time()
-            
             response = self.open_ai.generate_recipe(data['ingredients'])
             self.recipe_database.create_recipe(recipe_id, data['ingredients'], response, user_id, created_at)
             return response
-        
         except ValidationError as err:
             raise err
         except Error as err:
@@ -47,9 +45,7 @@ class RecipeService:
                     "user_id": recipe[3],
                     "created_at": recipe[4]
                 })
-            
             return response
-        
         except Error as err:
             raise err
         
@@ -58,12 +54,10 @@ class RecipeService:
         try:
             user_id = self.authentication.get_identity()
             recipe = self.recipe_database.get_recipe_by_id(user_id, recipe_id)
-        
             if recipe is None:
                 raise RecipeNotFound("Recipe not found.")
 
             self.recipe_database.delete_recipe_by_id(user_id, recipe_id)
-        
         except RecipeNotFound as err:
             raise err
         except Error as err:
@@ -83,8 +77,8 @@ class RecipeService:
 
             response = self.open_ai.generate_recipe(question)
             self.recipe_database.regenerate_recipe(response, user_id, recipe_id)
-        
         except NoRecipesToUpdate as err:
             raise err
         except Error as err:
             raise err
+        

@@ -7,7 +7,6 @@ from api.errors.TextErrors import NoTextsToUpdate
 
 class TextController:
     """This class receives data from the HTTP request and returns the response"""
-
     def __init__(self, text_service):
         self.text_service = text_service
 
@@ -23,14 +22,12 @@ class TextController:
             )
             response.status_code = 201
             return response
-    
         except ValidationError as err:
             response = jsonify(
                 error = f"Validation error: {err}"
             )
             response.status_code = 422
             return response
-
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -42,14 +39,11 @@ class TextController:
         """This method receives a token and returns all the texts registered in the user account"""
         try:
             response = self.text_service.get_texts()
-            
             response = jsonify(
                 texts = response
             )
-            
             response.status_code = 200
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -64,17 +58,14 @@ class TextController:
             response = jsonify(
                 message = "The text has been deleted successfully."
             )
-            
             response.status_code = 200
             return response
-        
         except TextNotFound as err:
             response = jsonify(
                 error = str(err)
             )
             response.status_code = 404
             return response
-        
         except Error as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
@@ -103,3 +94,4 @@ class TextController:
             )
             response.status_code = 400
             return response
+        

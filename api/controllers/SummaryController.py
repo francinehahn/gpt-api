@@ -7,7 +7,6 @@ from api.errors.SummaryErrors import NoSummariesToUpdate
 
 class SummaryController:
     """This class receives data from the HTTP request and returns the response"""
-
     def __init__(self, summary_service):
         self.summary_service = summary_service
     
@@ -94,3 +93,4 @@ class SummaryController:
             )
             response.status_code = 400
             return response
+        

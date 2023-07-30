@@ -9,7 +9,6 @@ from api.utils.current_datetime import current_time
 
 class SummaryService:
     """This class receives data from the controller and returns the response from the open ai api"""
-
     def __init__(self, summary_database, authentication, open_ai):
         self.summary_database = summary_database
         self.authentication = authentication
@@ -26,7 +25,6 @@ class SummaryService:
             response = self.open_ai.generate_summary(data['text'])
             self.summary_database.create_summary(summary_id, data['text'], response, user_id, created_at)
             return response
-        
         except ValidationError as err:
             raise err
         except Error as err:
@@ -48,7 +46,6 @@ class SummaryService:
                     "created_at": summary[4]
                 })
             return response
-        
         except Error as err:
             raise err
         
@@ -61,7 +58,6 @@ class SummaryService:
                 raise SummaryNotFound("Summary not found.")
 
             self.summary_database.delete_summary_by_id(user_id, summary_id)
-        
         except SummaryNotFound as err:
             raise err
         except Error as err:
@@ -81,8 +77,8 @@ class SummaryService:
 
             response = self.open_ai.generate_summary(question)
             self.summary_database.regenerate_summary(response, user_id, summary_id)
-            
         except NoSummariesToUpdate as err:
             raise err
         except Error as err:
             raise err
+        

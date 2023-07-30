@@ -19,3 +19,4 @@ class LoginSchema(Schema):
         """Password validation"""
         if len(password) < 8:
             raise ValidationError('The password must have at least 8 characters.')
+        
