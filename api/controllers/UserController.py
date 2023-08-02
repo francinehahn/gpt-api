@@ -18,6 +18,7 @@ class UserController:
                 message = "The user has been registered successfully."
             )
             response.status_code = 201
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except ValidationError as err:
             response = jsonify(
@@ -47,6 +48,7 @@ class UserController:
                 token = token
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except ValidationError as err:
             response = jsonify(

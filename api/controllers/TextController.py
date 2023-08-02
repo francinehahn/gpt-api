@@ -21,6 +21,7 @@ class TextController:
                 data = response
             )
             response.status_code = 201
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except ValidationError as err:
             response = jsonify(
@@ -43,6 +44,7 @@ class TextController:
                 texts = response
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except Error as err:
             response = jsonify(
@@ -59,6 +61,7 @@ class TextController:
                 message = "The text has been deleted successfully."
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except TextNotFound as err:
             response = jsonify(
@@ -81,6 +84,7 @@ class TextController:
                 message = "The text has been updated successfully."
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except NoTextsToUpdate as err:
             response = jsonify(

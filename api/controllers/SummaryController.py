@@ -20,6 +20,7 @@ class SummaryController:
                 data = response
             )
             response.status_code = 201
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except ValidationError as err:
             response = jsonify(
@@ -42,6 +43,7 @@ class SummaryController:
                 summaries = response
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except Error as err:
             response = jsonify(
@@ -58,6 +60,7 @@ class SummaryController:
                 message = "The summary has been deleted successfully."
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except SummaryNotFound as err:
             response = jsonify(
@@ -80,6 +83,7 @@ class SummaryController:
                 message = "The summary has been updated successfully."
             )
             response.status_code = 200
+            response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
         except NoSummariesToUpdate as err:
             response = jsonify(
