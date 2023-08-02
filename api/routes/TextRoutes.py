@@ -1,4 +1,5 @@
 """TextRoutes"""
+from flask_cors import cross_origin
 from flask_jwt_extended import jwt_required
 from flask import Blueprint
 from api.controllers.TextController import TextController
@@ -14,24 +15,28 @@ text_service = TextService(text_database, Authentication, OpenAI)
 text_controller = TextController(text_service)
 
 @text_blueprint.route("/create-text", methods=["POST"])
+@cross_origin
 @jwt_required()
 def create_text():
     """Endpoint that receives a subject and returns a text that addresses the subject"""
     return text_controller.create_text()
 
 @text_blueprint.route("/get-texts", methods=["GET"])
+@cross_origin
 @jwt_required()
 def get_texts():
     """Endpoint that receives a token and returns the texts from the user"""
     return text_controller.get_texts()
 
 @text_blueprint.route("/delete-text/<string:text_id>", methods=["DELETE"])
+@cross_origin
 @jwt_required()
 def delete_text_by_id(text_id):
     """Endpoint that receives a token and a text_id and deletes the text"""
     return text_controller.delete_text_by_id(text_id)
 
 @text_blueprint.route("/regenerate-text", methods=["PATCH"])
+@cross_origin
 @jwt_required()
 def regenerate_text():
     """Endpoint that receives a token and updates the text"""
