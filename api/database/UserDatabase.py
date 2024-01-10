@@ -5,7 +5,7 @@ import boto3
 from api.errors.UserErrors import EmailAlreadyInUse
 from dotenv import load_dotenv, find_dotenv
 
-load_dotenv(find_dotenv())
+load_dotenv()
 
 class UserDatabase:
     """Database layer"""

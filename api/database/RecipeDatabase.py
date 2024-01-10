@@ -2,13 +2,12 @@
 import os
 from botocore.exceptions import ClientError
 import boto3
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
-load_dotenv(find_dotenv())
+load_dotenv()
 
 class RecipeDatabase:
     """This class receives data from the service layer and inserts the answer from the openAI api into the database"""
-
     def __init__(self):
         # dybmodb client
         dynamodb_client = boto3.resource(
