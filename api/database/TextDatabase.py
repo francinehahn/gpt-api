@@ -1,84 +1,84 @@
 """Text database"""
-from mysql.connector import connect, Error
-from api.connectionDb.ConnectionDb import config
+import os
+from botocore.exceptions import ClientError
+import boto3
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 class TextDatabase:
     """This class receives data from the service layer and inserts the answer from the openAI api into the database"""
-    TABLE_NAME = "writing_assistant_gpt"
-
-    def create_text(self, writing_assistant_id, text, answer, user_id, created_at):
+    def __init__(self):
+        # dybmodb client
+        dynamodb_client = boto3.resource(
+            'dynamodb',
+            aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"),
+            aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
+            region_name='sa-east-1'
+        )
+        self.table_text = dynamodb_client.Table('writing_assistant_gpt')
+    
+    def create_text(self, data):
         """This method receives the text from the service layer and inserts it into the database"""
         try:
-            connection = connect(**config)
-            cursor = connection.cursor()
-            query = f"INSERT INTO {self.TABLE_NAME} (id, question, answer, user_id, created_at) VALUES (%s, %s, %s, %s, %s)"
-            values = (writing_assistant_id, text, answer, user_id, created_at)
-            cursor.execute(query, values)
-            connection.commit()
-        except Error as err:
-            raise err
-        finally:
-            cursor.close()
-            connection.close()
+            self.table_text.put_item(
+                Item={
+                    'id': data['writing_assistant_id'],
+                    'question': data['text'],
+                    'answer': data['answer'],
+                    'user_id': data['user_id'],
+                    'created_at': data['created_at']
+                }
+            )
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
 
     def get_texts(self, user_id):
         """This method receives a user_id and returns all the texts from the account"""
         try:
-            connection = connect(**config)
-            cursor = connection.cursor()
-            query = f"SELECT * FROM {self.TABLE_NAME} WHERE user_id = (%s) ORDER BY created_at ASC"
-            cursor.execute(query, (user_id,))
-            texts = cursor.fetchall()
+            texts = self.table_text.scan(
+                FilterExpression='user_id = :val',
+                ExpressionAttributeValues={':val': user_id}
+            )
             return texts
-        except Error as err:
-            raise err
-        finally:
-            cursor.close()
-            connection.close()
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
 
-    def get_text_by_id(self, user_id, text_id):
+    def get_text_by_id(self, text_id):
         """This method receives a user_id and a text_id and returns the text"""
         try:
-            connection = connect(**config)
-            cursor = connection.cursor()
-            query = f"SELECT * FROM {self.TABLE_NAME} WHERE user_id = (%s) AND id = (%s)"
-            values = (user_id, text_id)
-            cursor.execute(query, values)
-            text = cursor.fetchone()
+            text = self.table_text.get_item(
+                Key={
+                    'id': text_id
+                }
+            )
             return text
-        except Error as err:
-            raise err
-        finally:
-            cursor.close()
-            connection.close()
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
 
-    def delete_text_by_id(self, user_id, text_id):
+    def delete_text_by_id(self, text_id):
         """This method receives a user_id and a text_id and deletes the text"""
         try:
-            connection = connect(**config)
-            cursor = connection.cursor()
-            query = f"DELETE FROM {self.TABLE_NAME} WHERE user_id = (%s) AND id = (%s)"
-            values = (user_id, text_id)
-            cursor.execute(query, values)
-            connection.commit()
-        except Error as err:
-            raise err
-        finally:
-            cursor.close()
-            connection.close()
+            self.table_text.delete_item(
+                Key={
+                    'id': text_id
+                }
+            )
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
 
-    def regenerate_text(self, answer, user_id, text_id):
+    def regenerate_text(self, data):
         """This method receives a user_id, a text_id, and a new answer and updates the text (answer)"""
         try:
-            connection = connect(**config)
-            cursor = connection.cursor()
-            query = f"UPDATE {self.TABLE_NAME} SET answer = (%s) WHERE user_id = (%s) AND id = (%s)"
-            values = (answer, user_id, text_id)
-            cursor.execute(query, values)
-            connection.commit()
-        except Error as err:
-            raise err
-        finally:
-            cursor.close()
-            connection.close()
+            self.table_text.update_item(
+                Key={
+                    'id': data['text_id']
+                },
+                UpdateExpression='SET answer = :update',
+                ExpressionAttributeValues={
+                    ':update': data['answer']
+                }
+            )
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
             

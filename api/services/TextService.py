@@ -1,6 +1,6 @@
 """Text service"""
 import uuid
-from mysql.connector import Error
+from botocore.exceptions import ClientError
 from marshmallow import ValidationError
 from api.schema.WritingAssistantSchema import WritingAssistantSchema
 from api.errors.TextErrors import TextNotFound
@@ -23,12 +23,19 @@ class TextService:
             created_at = current_time()
 
             response = self.open_ai.generate_text(data['text'])
-            self.text_database.create_text(writing_assistant_id, data['text'], response, user_id, created_at)
+            data_db = {
+                'writing_assistant_id': writing_assistant_id, 
+                'text': data['text'], 
+                'answer': response, 
+                'user_id': user_id, 
+                'created_at': created_at
+            }
+            self.text_database.create_text(data_db)
             return response
         except ValidationError as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
     
     def get_texts(self):
         """This method receives a token and sends the user_id to the database layer"""
@@ -46,22 +53,22 @@ class TextService:
                     "created_at": text[4]
                 })
             return response
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def delete_text_by_id(self, text_id):
         """This method receives a text_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
-            text = self.text_database.get_text_by_id(user_id, text_id)
+            text = self.text_database.get_text_by_id(text_id)
             if text is None:
                 raise TextNotFound("Text not found.")
 
-            self.text_database.delete_text_by_id(user_id, text_id)
+            self.text_database.delete_text_by_id(text_id)
         except TextNotFound as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def regenerate_text(self):
         """This method receives a a token and sends the info to the database layer"""
@@ -76,9 +83,9 @@ class TextService:
             question = last_text[1]
 
             response = self.open_ai.generate_text(question)
-            self.text_database.regenerate_text(response, user_id, text_id)
+            self.text_database.regenerate_text({'answer': response, 'text_id': text_id})
         except NoTextsToUpdate as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         

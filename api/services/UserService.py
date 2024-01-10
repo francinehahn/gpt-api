@@ -1,8 +1,7 @@
 """UserService.py"""
 import uuid
 from marshmallow import ValidationError
-from mysql.connector import Error
-
+from botocore.exceptions import ClientError
 from api.schema.UserSchema import UserSchema
 from api.schema.LoginSchema import LoginSchema
 from api.errors.UserErrors import EmailAlreadyInUse, IncorrectLoginInfo
@@ -29,8 +28,8 @@ class UserService:
             raise err
         except ValidationError as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def login(self, data):
         """This method receives user data from the controller and returns an auth token"""
@@ -52,6 +51,6 @@ class UserService:
             raise err
         except ValidationError as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         

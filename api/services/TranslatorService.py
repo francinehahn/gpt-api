@@ -1,6 +1,6 @@
 """Translator service"""
 import uuid
-from mysql.connector import Error
+from botocore.exceptions import ClientError
 from marshmallow import ValidationError
 from api.schema.TranslatorSchema import TranslatorSchema
 from api.schema.RegenerateTranslationSchema import RegenerateTranslationSchema
@@ -24,12 +24,19 @@ class TranslatorService:
             created_at = current_time()
 
             response = self.open_ai.generate_translation(data)
-            self.translator_database.create_translation(translator_id, data['text'], response, user_id, created_at)
+            data_db = {
+                'translator_id': translator_id,
+                'created_at': created_at,
+                'user_id': user_id,
+                'question': data['text'],
+                'answer': response
+            }
+            self.translator_database.create_translation(data_db)
             return response
         except ValidationError as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
     
     def get_translations(self):
         """This method receives a token and sends the user_id to the database layer"""
@@ -47,22 +54,22 @@ class TranslatorService:
                     "created_at": translation[4]
                 })
             return response
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def delete_translation_by_id(self, translation_id):
         """This method receives a translation_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
-            translation = self.translator_database.get_translation_by_id(user_id, translation_id)
+            translation = self.translator_database.get_translation_by_id(translation_id)
             if translation is None:
                 raise TranslationNotFound("Translation not found.")
 
-            self.translator_database.delete_translation_by_id(user_id, translation_id)
+            self.translator_database.delete_translation_by_id(translation_id)
         except TranslationNotFound as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
     
     def regenerate_translation(self, data):
         """This method receives a a token and sends the info to the database layer"""
@@ -84,11 +91,11 @@ class TranslatorService:
             }
 
             response = self.open_ai.generate_translation(formatted_translation)
-            self.translator_database.regenerate_translation(response, user_id, translation_id)  
+            self.translator_database.regenerate_translation({'translation_id': translation_id, 'answer': response})  
         except ValidationError as err:
             raise err
         except NoTranslationsToUpdate as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         

@@ -1,7 +1,7 @@
 """Recipe service"""
 import uuid
-from mysql.connector import Error
 from marshmallow import ValidationError
+from botocore.exceptions import ClientError
 from api.schema.RecipeSchema import RecipeSchema
 from api.errors.RecipeErrors import RecipeNotFound
 from api.errors.RecipeErrors import NoRecipesToUpdate
@@ -23,12 +23,19 @@ class RecipeService:
             recipe_id = str(uuid.uuid4())
             created_at = current_time()
             response = self.open_ai.generate_recipe(data['ingredients'])
-            self.recipe_database.create_recipe(recipe_id, data['ingredients'], response, user_id, created_at)
+            data_db = {
+                'recipe_id': recipe_id, 
+                'ingredients': data['ingredients'], 
+                'answer': response, 
+                'user_id': user_id, 
+                'created_at': created_at
+            }
+            self.recipe_database.create_recipe(data_db)
             return response
         except ValidationError as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def get_recipes(self):
         """This method receives a token and sends the user_id to the database layer"""
@@ -46,22 +53,22 @@ class RecipeService:
                     "created_at": recipe[4]
                 })
             return response
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def delete_recipe_by_id(self, recipe_id):
         """This method receives a recipe_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
-            recipe = self.recipe_database.get_recipe_by_id(user_id, recipe_id)
+            recipe = self.recipe_database.get_recipe_by_id(recipe_id)
             if recipe is None:
                 raise RecipeNotFound("Recipe not found.")
 
-            self.recipe_database.delete_recipe_by_id(user_id, recipe_id)
+            self.recipe_database.delete_recipe_by_id(recipe_id)
         except RecipeNotFound as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def regenerate_recipe(self):
         """This method receives a a token and sends the info to the database layer"""
@@ -76,9 +83,9 @@ class RecipeService:
             question = last_recipe[1] #ingredients
 
             response = self.open_ai.generate_recipe(question)
-            self.recipe_database.regenerate_recipe(response, user_id, recipe_id)
+            self.recipe_database.regenerate_recipe({'answer': response, 'recipe_id': recipe_id})
         except NoRecipesToUpdate as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         

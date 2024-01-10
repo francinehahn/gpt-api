@@ -1,6 +1,6 @@
 """Summary service"""
 import uuid
-from mysql.connector import Error
+from botocore.exceptions import ClientError
 from marshmallow import ValidationError
 from api.schema.SummarySchema import SummarySchema
 from api.errors.SummaryErrors import SummaryNotFound
@@ -23,12 +23,19 @@ class SummaryService:
             created_at = current_time()
 
             response = self.open_ai.generate_summary(data['text'])
-            self.summary_database.create_summary(summary_id, data['text'], response, user_id, created_at)
+            data_db = {
+                'summary_id': summary_id, 
+                'text': data['text'], 
+                'answer': response, 
+                'user_id': user_id, 
+                'created_at': created_at
+            }
+            self.summary_database.create_summary(data_db)
             return response
         except ValidationError as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
 
     def get_summaries(self):
         """This method receives a token and sends the user_id to the database layer"""
@@ -46,22 +53,22 @@ class SummaryService:
                     "created_at": summary[4]
                 })
             return response
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def delete_summary_by_id(self, summary_id):
         """This method receives a summary_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
-            summary = self.summary_database.get_summary_by_id(user_id, summary_id)
+            summary = self.summary_database.get_summary_by_id(summary_id)
             if summary is None:
                 raise SummaryNotFound("Summary not found.")
 
-            self.summary_database.delete_summary_by_id(user_id, summary_id)
+            self.summary_database.delete_summary_by_id(summary_id)
         except SummaryNotFound as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
     def regenerate_summary(self):
         """This method receives a a token and sends the info to the database layer"""
@@ -76,9 +83,13 @@ class SummaryService:
             question = last_summary[1]
 
             response = self.open_ai.generate_summary(question)
-            self.summary_database.regenerate_summary(response, user_id, summary_id)
+            data_db = {
+                'summary_id': summary_id,
+                'answer': response
+            }
+            self.summary_database.regenerate_summary(data_db)
         except NoSummariesToUpdate as err:
             raise err
-        except Error as err:
-            raise err
+        except ClientError as e:
+            raise ClientError(str(e), 'DynamoDB Client Error.') from e
         
