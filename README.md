@@ -11,7 +11,7 @@ This is an API REST that consumes data from the OpenAI API.
 - Bcrypt
 - JWT
 - Marshmallow
-- MySQL
+- DynamoDB
 
 ## 🌐 Deploy
 https://gpt-api-delta.vercel.app
