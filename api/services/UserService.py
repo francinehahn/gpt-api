@@ -18,6 +18,10 @@ class UserService:
         try:
             UserSchema().load(data)
             user_id = str(uuid.uuid4())
+            
+            user_data = self.user_database.get_user_by_email(data['email'])
+            if 'Items' in user_data:
+                raise EmailAlreadyInUse('This email has already been registered.')
 
             #criptography
             hashed_password = self.criptography.hash_password(data['password'])
