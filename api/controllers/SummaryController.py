@@ -1,6 +1,6 @@
 """Summary controller"""
 from marshmallow import ValidationError
-from mysql.connector import Error
+from botocore.exceptions import ClientError
 from flask import jsonify, request
 from api.errors.SummaryErrors import SummaryNotFound
 from api.errors.SummaryErrors import NoSummariesToUpdate
@@ -28,7 +28,7 @@ class SummaryController:
             )
             response.status_code = 422
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -45,7 +45,7 @@ class SummaryController:
             response.status_code = 200
             response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -68,7 +68,7 @@ class SummaryController:
             )
             response.status_code = 404
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -91,7 +91,7 @@ class SummaryController:
             )
             response.status_code = 422
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )

@@ -1,6 +1,6 @@
 """Text controller"""
 from marshmallow import ValidationError
-from mysql.connector import Error
+from botocore.exceptions import ClientError
 from flask import jsonify, request
 from api.errors.TextErrors import TextNotFound
 from api.errors.TextErrors import NoTextsToUpdate
@@ -29,7 +29,7 @@ class TextController:
             )
             response.status_code = 422
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -46,7 +46,7 @@ class TextController:
             response.status_code = 200
             response.headers.add('Access-Control-Allow-Origin', 'https://gpt-api-frontend.vercel.app')
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -69,7 +69,7 @@ class TextController:
             )
             response.status_code = 404
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -92,7 +92,7 @@ class TextController:
             )
             response.status_code = 422
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )

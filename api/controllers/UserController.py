@@ -1,7 +1,7 @@
 """User controller"""
 from flask import jsonify, request
 from marshmallow import ValidationError
-from mysql.connector import Error
+from botocore.exceptions import ClientError
 from api.errors.UserErrors import EmailAlreadyInUse, IncorrectLoginInfo
 
 class UserController:
@@ -32,7 +32,7 @@ class UserController:
             )
             response.status_code = 409
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
@@ -62,7 +62,7 @@ class UserController:
             )
             response.status_code = 422
             return response
-        except Error as err:
+        except ClientError as err:
             response = jsonify(
                 error = f"Unexpected error: {err}"
             )
