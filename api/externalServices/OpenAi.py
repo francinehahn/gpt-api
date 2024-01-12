@@ -12,7 +12,7 @@ class OpenAI:
     def generate_recipe(question):
         """This method returns a recipe"""
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo-instruct",
             prompt=f"Crie uma receita com os seguintes ingredientes: {question}",
             temperature=0.8,
             max_tokens=2048,
@@ -25,7 +25,7 @@ class OpenAI:
     def generate_summary(question):
         """This method returns a summary"""
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo-instruct",
             prompt=f"Resuma o seguinte texto: {question}",
             temperature=0.8,
             max_tokens=2048,
@@ -38,7 +38,7 @@ class OpenAI:
     def generate_text(question):
         """This method returns a text"""
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo-instruct",
             prompt=f"Crie um texto para: {question}",
             temperature=0.8,
             max_tokens=2048,
@@ -50,8 +50,9 @@ class OpenAI:
     @staticmethod
     def generate_translation(question):
         """This method returns a translation"""
+        print('TRANSLATION')
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo-instruct",
             prompt=f"Traduza o seguinte texto do {question['source_language']} para o {question['target_language']}: {question['text']}",
             temperature=0.8,
             max_tokens=2048,

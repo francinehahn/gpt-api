@@ -22,8 +22,9 @@ class TranslatorService:
             user_id = self.authentication.get_identity()
             translator_id = str(uuid.uuid4())
             created_at = current_time()
-
+            
             response = self.open_ai.generate_translation(data)
+            print(response)
             data_db = {
                 'translator_id': translator_id,
                 'created_at': created_at,
