@@ -44,7 +44,7 @@ class SummaryService:
             summaries = self.summary_database.get_summaries(user_id)
 
             response = []
-            for summary in summaries:
+            for summary in summaries['Items']:
                 response.append({
                     "id": summary[0],
                     "question": summary[1],
@@ -61,7 +61,7 @@ class SummaryService:
         try:
             user_id = self.authentication.get_identity()
             summary = self.summary_database.get_summary_by_id(summary_id)
-            if summary is None:
+            if 'Item' not in summary:
                 raise SummaryNotFound("Summary not found.")
 
             self.summary_database.delete_summary_by_id(summary_id)
@@ -75,9 +75,10 @@ class SummaryService:
         try:
             user_id = self.authentication.get_identity()
             all_summaries = self.summary_database.get_summaries(user_id)
-            if len(all_summaries) == 0:
+            if 'Items' in all_summaries and len(all_summaries['Items']) == 0:
                 raise NoSummariesToUpdate("There are no summaries registered in the database.")
 
+            all_summaries = all_summaries['Items']
             last_summary = all_summaries[-1]
             summary_id = last_summary[0]
             question = last_summary[1]

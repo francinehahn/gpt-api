@@ -21,7 +21,9 @@ class UserService:
             
             user_data = self.user_database.get_user_by_email(data['email'])
             if 'Items' in user_data:
-                raise EmailAlreadyInUse('This email has already been registered.')
+                user_data = user_data['Items']
+                if len(user_data) > 0:
+                    raise EmailAlreadyInUse('This email has already been registered.')
 
             #criptography
             hashed_password = self.criptography.hash_password(data['password'])
@@ -40,10 +42,12 @@ class UserService:
         try:
             LoginSchema().load(data)
             user = self.user_database.get_user_by_email(data["email"])
-            if user is None:
+            
+            if 'Items' in user and len(user['Items']) == 0:
                 raise IncorrectLoginInfo("Email or password are incorrect.")
 
-            is_password_correct = self.criptography.verify_password(data["password"], user[4])
+            user = user['Items']
+            is_password_correct = self.criptography.verify_password(data["password"], user[0]["password"])
             if (is_password_correct is False):
                 raise IncorrectLoginInfo("Email or password are incorrect.")
 

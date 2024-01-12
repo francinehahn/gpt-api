@@ -44,7 +44,7 @@ class TextService:
             texts = self.text_database.get_texts(user_id)
 
             response = []
-            for text in texts:
+            for text in texts['Items']:
                 response.append({
                     "id": text[0],
                     "question": text[1],
@@ -61,7 +61,7 @@ class TextService:
         try:
             user_id = self.authentication.get_identity()
             text = self.text_database.get_text_by_id(text_id)
-            if text is None:
+            if 'Item' not in text:
                 raise TextNotFound("Text not found.")
 
             self.text_database.delete_text_by_id(text_id)
@@ -75,9 +75,10 @@ class TextService:
         try:
             user_id = self.authentication.get_identity()
             all_texts = self.text_database.get_texts(user_id)
-            if len(all_texts) == 0:
+            if 'Items' in all_texts and len(all_texts['Items']) == 0:
                 raise NoTextsToUpdate("There are no texts registered in the database.")
 
+            all_texts = all_texts['Items']
             last_text = all_texts[-1]
             text_id = last_text[0]
             question = last_text[1]

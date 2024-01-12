@@ -44,7 +44,7 @@ class RecipeService:
             recipes = self.recipe_database.get_recipes(user_id)
 
             response = []
-            for recipe in recipes:
+            for recipe in recipes['Items']:
                 response.append({
                     "id": recipe[0],
                     "question": recipe[1],
@@ -61,7 +61,8 @@ class RecipeService:
         try:
             user_id = self.authentication.get_identity()
             recipe = self.recipe_database.get_recipe_by_id(recipe_id)
-            if recipe is None:
+        
+            if 'Item' not in recipe:
                 raise RecipeNotFound("Recipe not found.")
 
             self.recipe_database.delete_recipe_by_id(recipe_id)
@@ -75,9 +76,10 @@ class RecipeService:
         try:
             user_id = self.authentication.get_identity()
             all_recipes = self.recipe_database.get_recipes(user_id)
-            if len(all_recipes) == 0:
+            if 'Items' in all_recipes and len(all_recipes['Items']) == 0:
                 raise NoRecipesToUpdate("There are no recipes registered in the database.")
 
+            all_recipes = all_recipes['Items']
             last_recipe = all_recipes[-1]
             recipe_id = last_recipe[0]
             question = last_recipe[1] #ingredients

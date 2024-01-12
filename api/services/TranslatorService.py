@@ -45,7 +45,7 @@ class TranslatorService:
             translations = self.translator_database.get_translations(user_id)
 
             response = []
-            for translation in translations:
+            for translation in translations['Items']:
                 response.append({
                     "id": translation[0],
                     "question": translation[1],
@@ -61,8 +61,9 @@ class TranslatorService:
         """This method receives a translation_id and a token and sends the info to the database layer"""
         try:
             user_id = self.authentication.get_identity()
-            translation = self.translator_database.get_translation_by_id(translation_id)
-            if translation is None:
+            translation = self.translator_database.get_translation_by_id(user_id)
+            
+            if 'Item' not in translation:
                 raise TranslationNotFound("Translation not found.")
 
             self.translator_database.delete_translation_by_id(translation_id)
@@ -78,9 +79,10 @@ class TranslatorService:
             user_id = self.authentication.get_identity()
             
             all_translations = self.translator_database.get_translations(user_id)
-            if len(all_translations) == 0:
+            if 'Items' in all_translations and len(all_translations['Items']) == 0:
                 raise NoTranslationsToUpdate("There are no translations registered in the database.")
 
+            all_translations = all_translations['Items']
             last_translation = all_translations[-1]
             translation_id = last_translation[0]
 
