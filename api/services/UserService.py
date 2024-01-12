@@ -48,10 +48,10 @@ class UserService:
 
             user = user['Items']
             is_password_correct = self.criptography.verify_password(data["password"], user[0]["password"])
-            if (is_password_correct is False):
+            if is_password_correct is False:
                 raise IncorrectLoginInfo("Email or password are incorrect.")
 
-            token = self.authentication.generate_token(user[0])
+            token = self.authentication.generate_token(user[0]['id'])
             return token
         except EmailAlreadyInUse as err:
             raise err
